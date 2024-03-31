@@ -1,10 +1,8 @@
-package peg: core@0.1.0;
+package notedown: core@0.1.0;
 
 world host {
     export types;
-    export cst;
-    export visitor;
-    export listener;
+    export syntax-tree;
 }
 
 interface types {
@@ -18,64 +16,94 @@ record text-range {
 }
 
 interface syntax-tree {
-use types.{text-range, language, url};
+use types.{text-range, url};
 
 hack-unused: func() -> notedown-root;
 
 record notedown-root {
-    blocks: list<any-blocks>,
-    span: text-span,
+    blocks: list<notedown-block>,
     path: option<url>
 }
 
-//     Heading(Box<HeadingSpan>),
-//     Paragraph(Box<ParagraphSpan>),
-//     SpaceBreak(Box<ParagraphBreakSpan>),
-//     MathBlock(Box<DisplayMathSpan>),
-record any-block {
-    %type: any-block-type
-    span: text-span,
+record notedown-block {
+    %type: block-type,
+    range: text-range,
 }
 
-variant any-block-type {
+variant block-type {
     heading(heading-block),
     horizontal-rule(horizontal-rule),
     paragraph(paragraph-block),
-    space-break(space-break-block),
-    math-block(math-block),
+    space-break(breakline-block),
+    code-block(code-span),
+    math-block(math-span),
+}
+record paragraph-block {
+    terms: list<paragraph-term>,
+    range: text-range,
+}
+record paragraph-term {
+    %type: paragraph-type,
+    range: text-range,
 }
 
+variant paragraph-type {
+    text(string),
+    math(math-span),
+    code(code-span),
+}
+// === title block === -----------------------------------------------------------------------------
 record heading-block {
     level: u32,
     title: paragraph-block,
-    span: text-span,
+    range: text-range,
 }
-
-record paragraph-block {
-
+// === line breaks === -----------------------------------------------------------------------------
+/// The line break block
+/// ```note
+/// ===
+/// ````
+record horizontal-rule {
+    lines: u32,
+    range: text-range,
 }
-
-
-record space-break-block {
-
+record breakline-block {
+    lines: u32,
+    range: text-range,
 }
-
-
-/// The math text written in the top block
+record space-inline {
+    space: string,
+    range: text-range,
+}
+// === line breaks === -----------------------------------------------------------------------------
+/// The math text written in the paragraph
 ///
 /// ### Example
-/// ```note
-/// $$
-/// \int_0^\infty \frac{x^3}{e^x-1}\,dx = \frac{\pi^4}{
-/// 4}
-/// $$
+/// ````note
+/// ```code(key: args)
 /// ```
-record math-block {
-    %type: math-type
-    display: math-display,
-    math: string,
-    span: text-span,
+/// ````
+record code-span {
+    action: code-action,
+    lines: string,
+    range: text-range,
 }
+variant code-action {
+    highlight(code-highlight),
+}
+/// The math text written in the paragraph
+///
+/// ### Example
+/// ````note
+/// ```language
+/// highlight
+/// ```
+/// ````
+record code-highlight {
+    language: string,
+    range: text-range,
+}
+// === line breaks === -----------------------------------------------------------------------------
 /// The math text written in the paragraph
 ///
 /// ### Example
@@ -84,29 +112,23 @@ record math-block {
 /// ```
 record math-span {
     display: math-display,
-    content: math-type
-    math: string,
-    span: text-span,
+    content: math-content,
+    range: text-range,
 }
-
-variant math-type {
-    /// MathML element
-    mathml,
-    /// TeX ompatible formulas, including `mathjax` and `katex`
-    tex,
-    asciimath,
-}
-
 variant math-display {
     inline,
     block
 }
-
-
-record horizontal-rule {
-    marks: string,
-    span: text-span,
+variant math-content {
+    /// MathML element
+    mathml(string),
+    /// TeX ompatible formulas, including `mathjax` and `katex`
+    tex(string),
+    asciimath(string),
 }
+// === line breaks === -----------------------------------------------------------------------------
+
+
 
 
 

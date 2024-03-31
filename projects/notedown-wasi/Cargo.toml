@@ -1,6 +1,6 @@
 [package]
-name = "yggdrasil-wasi"
-version = "0.0.1"
+name = "notedown-wasi"
+version = "0.0.0"
 authors = ["Aster <192607617@qq.com>"]
 description = "Yggdrasil Shared Structure"
 repository = "https://github.com/ygg-lang/yggdrasil-rs"
@@ -17,15 +17,14 @@ name = "wasi_notedown"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-rctree = "0.6.0"
+url = "2.5.0"
+wit-bindgen = "0.23.0"
 
-[dependencies.wit-bindgen]
-version = "0.23.0"
-#path = 'C:\Users\Dell\CLionProjects\wit-bindgen\crates\guest-rust'
 
-[dependencies.yggdrasil-rt]
-version = "0.1.3"
-#path = 'C:\Users\Dell\CLionProjects\yggdrasil.rs\projects\ygg-rt'
+[dev-dependencies]
+wit-parser = "0.202.0"
+wit-bindgen-core = "0.23.0"
+wit-bindgen-rust = "0.23.0"
 
 [features]
 default = []
