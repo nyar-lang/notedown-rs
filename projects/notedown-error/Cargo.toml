@@ -16,14 +16,14 @@ url = { version = "2.3.1", optional = true }
 #url = "2.3.1"
 
 [dependencies.validatus]
-version = "0.0.0"
-path = 'C:\Users\Dell\CLionProjects\diagnostic-rs\projects\validation'
+version = "0.0.6"
+#path = 'C:\Users\Dell\CLionProjects\diagnostic-rs\projects\validation'
 
 [dependencies.pex]
 optional = true
 version = "0.2.4"
 features = ["regex"]
-path = 'C:\Users\Dell\CLionProjects\pex\projects\pex-core'
+#path = 'C:\Users\Dell\CLionProjects\pex\projects\pex-core'
 
 [dev-dependencies]
 #notedown_ast = { version = "*", path = "../notedown-ast" }
