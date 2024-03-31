@@ -2,9 +2,13 @@ mod code;
 mod command;
 mod heading;
 mod link;
+mod math;
 mod paragraph;
 mod programming;
 mod style;
+
+mod lists;
+mod table;
 
 use deriver::From;
 use notedown_error::Url;
@@ -17,7 +21,7 @@ pub use self::{
     link::UriNode,
     paragraph::{BadNode, ParagraphKind, ParagraphNode},
     programming::IdentifierNode,
-    style::{TextEscapeNode, TextPlainNode, TextStyleNode},
+    style::{EscapeNode, TextPlainNode, TextStyleNode},
 };
 
 #[derive(Clone, Debug, Eq, PartialEq, Hash, From)]

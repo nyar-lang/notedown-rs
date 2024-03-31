@@ -16,7 +16,7 @@ pub use crate::{
         command::{CommandArguments, CommandBody, CommandNode},
         identifier::{AlignNode, LigatureNode, NumberLiteralNode, NumberValueNode},
     },
-    traits::{NoteGenerator, NoteOptimizer},
+    traits::{CodeEngine, MathEngine, NoteGenerator, NoteTransformer},
 };
 
 #[cfg(feature = "html-ast")]

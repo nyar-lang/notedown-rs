@@ -7,7 +7,7 @@ use notedown_ast::{
         CodeInlineSpan, CommaNode, FontBoldItalicSpan, FontBoldSpan, FontDeleteSpan, FontItalicSpan, FontUnderlineSpan, HeadingSpan,
         NewlineSpan, NotedownTerm, ParagraphBreakSpan, ParagraphSpan, ParagraphTerm, PeriodNode, TextSpaceNode,
     },
-    hir::{IdentifierNode, TextEscapeNode, TextPlainNode, UriNode},
+    hir::{EscapeNode, IdentifierNode, TextPlainNode, UriNode},
 };
 use notedown_error::{helpers::paragraph_break, ParseResult, ParseState, StopBecause};
 
@@ -22,7 +22,7 @@ impl NoteParser for NotedownTerm {
     }
 }
 
-impl NoteParser for TextEscapeNode {
+impl NoteParser for EscapeNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_char('\\')?;
         let (state, any) = state.match_char_any()?;
@@ -60,7 +60,7 @@ impl NoteParser for ParagraphTerm {
             .choose_from(FontUnderlineSpan::parse)
             .choose_from(UriNode::parse)
             .choose(parse_command)
-            .choose_from(TextEscapeNode::parse)
+            .choose_from(EscapeNode::parse)
             .choose_from(TextPlainNode::parse)
             .choose_from(CommaNode::parse)
             .choose_from(PeriodNode::parse)

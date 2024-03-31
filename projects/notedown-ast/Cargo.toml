@@ -31,7 +31,7 @@ path = "../text-utils"
 
 [dependencies.html-ast]
 version = "0.1.0"
-path = 'C:\Users\Dell\CLionProjects\HTMLer\projects\html-ast'
+#path = 'C:\Users\Dell\CLionProjects\HTMLer\projects\html-ast'
 optional = true
 
 [dev-dependencies]

@@ -3,6 +3,7 @@
 mod atomic;
 mod commands;
 mod helpers;
+mod math;
 mod text;
 mod traits;
 

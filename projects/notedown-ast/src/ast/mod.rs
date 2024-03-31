@@ -13,6 +13,7 @@ pub use self::{
     code::CodeInlineSpan,
     command::CommandLineSpan,
     escaped::EscapedCommand,
+    math::{DisplayMathSpan, InlineMathSpan},
     paragraph::{ParagraphSpan, ParagraphTerm},
     punctuation::{CommaNode, PeriodNode},
     style::{FontBoldItalicSpan, FontBoldSpan, FontDeleteSpan, FontItalicSpan, FontUnderlineSpan},
@@ -20,8 +21,8 @@ pub use self::{
     whitespace::{HSpaceNode, IgnoreNode, NewlineSpan, ParagraphBreakSpan, TextSpaceNode, VSpaceNode},
 };
 use crate::hir::{
-    CodeNode, CommandNode, HeadingLevel, HeadingNode, IdentifierNode, NotedownHIR, ParagraphKind, ParagraphNode, TextEscapeNode, TextPlainNode,
-    TextStyleNode, UriNode,
+    CodeNode, CommandNode, HeadingLevel, HeadingNode, IdentifierNode, NotedownHIR, ParagraphKind, ParagraphNode, TextPlainNode, TextStyleNode,
+    UriNode,
 };
 use deriver::From;
 use notedown_error::Url;
@@ -44,6 +45,7 @@ pub enum NotedownTerm {
     Heading(Box<HeadingSpan>),
     Paragraph(Box<ParagraphSpan>),
     SpaceBreak(Box<ParagraphBreakSpan>),
+    MathBlock(Box<DisplayMathSpan>),
 }
 
 impl NotedownAST {
@@ -60,6 +62,9 @@ impl NotedownAST {
                 NotedownTerm::Heading(v) => terms.push(v.as_hir().into()),
                 NotedownTerm::Paragraph(v) => terms.push(v.as_hir().into()),
                 NotedownTerm::SpaceBreak(_) => continue,
+                NotedownTerm::MathBlock(_) => {
+                    todo!()
+                }
             }
         }
         NotedownHIR { node: terms, url: self.path.clone() }

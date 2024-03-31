@@ -4,7 +4,7 @@ use crate::{
 };
 use notedown_ast::{
     ast::{CodeInlineSpan, CommandLineSpan, NewlineSpan, ParagraphTerm, TextSpaceNode},
-    hir::{IdentifierNode, TextEscapeNode, TextPlainNode},
+    hir::{EscapeNode, IdentifierNode, TextPlainNode},
 };
 use notedown_error::{ParseResult, ParseState};
 
@@ -31,7 +31,7 @@ fn parse_cmd_rol(input: ParseState) -> ParseResult<TextPlainNode> {
     state.finish(TextPlainNode { text: text.to_string(), span: get_span(input, state) })
 }
 
-/// `\command`code``
+/// ``\command`code``
 fn parse_cmd_row(input: ParseState) -> ParseResult<TextPlainNode> {
     let state = input.skip(NewlineSpan::parse);
     let (state, text) = CodeInlineSpan::parse(state)?;

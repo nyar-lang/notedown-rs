@@ -3,7 +3,7 @@ use super::*;
 /// `\.`
 #[derive(Clone, Debug, Eq, PartialEq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TextEscapeNode {
+pub struct EscapeNode {
     pub escape: char,
     pub span: Range<u32>,
 }
@@ -34,7 +34,7 @@ impl TextPlainNode {
     }
 }
 
-impl TextEscapeNode {
+impl EscapeNode {
     /// Create a new escape node.
     pub fn new(escape: char, span: Range<u32>) -> Self {
         Self { escape, span }

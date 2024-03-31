@@ -1,4 +1,5 @@
 use super::*;
+use crate::hir::EscapeNode;
 
 /// Sequence of paragraph ast
 #[derive(Clone, Debug, Eq, PartialEq, Hash)]
@@ -20,12 +21,16 @@ pub enum ParagraphTerm {
     Bold(Box<FontBoldSpan>),
     /// `**bold italic**`
     BoldItalic(Box<FontBoldItalicSpan>),
-    /// `_underline_`
+    /// `~underline~`
     Underline(Box<FontUnderlineSpan>),
-    /// `__delete__`
+    /// `~~delete~~`
     Delete(Box<FontDeleteSpan>),
     /// `` `code` ``
     Code(Box<CodeInlineSpan>),
+    /// `$$display math$$`
+    DisplayMath(Box<DisplayMathSpan>),
+    /// `$inline math$`
+    InlineMath(Box<InlineMathSpan>),
     /// `https://example.com`
     Uri(Box<UriNode>),
     /// `\cmd: rest of the line`
@@ -39,7 +44,7 @@ pub enum ParagraphTerm {
     /// `.`
     Period(Box<PeriodNode>),
     /// `\\`
-    Escape(Box<TextEscapeNode>),
+    Escape(Box<EscapeNode>),
 }
 
 impl ParagraphSpan {
@@ -81,9 +86,9 @@ impl ParagraphSpan {
                 ParagraphTerm::Delete(v) => terms.push(v.as_hir().into()),
                 ParagraphTerm::Code(v) => terms.push(v.as_hir().into()),
                 ParagraphTerm::CommandLine(v) => terms.push(v.as_hir().into()),
-                ParagraphTerm::Uri(v) => {
-                    terms.push(ParagraphKind::Uri(v.clone()));
-                }
+                ParagraphTerm::Uri(v) => terms.push(ParagraphKind::Uri(v.clone())),
+                ParagraphTerm::DisplayMath(v) => terms.push(v.as_hir().into()),
+                ParagraphTerm::InlineMath(v) => terms.push(v.as_hir().into()),
             }
         }
         ParagraphNode { terms, span: self.span.clone() }

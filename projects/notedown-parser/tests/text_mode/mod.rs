@@ -27,3 +27,12 @@ fn test2() -> Result<(), NoteError> {
     output.write_all(html.to_string().as_bytes())?;
     Ok(())
 }
+
+// #[test]
+// fn test3() -> Result<(), NoteError> {
+//     let here = Path::new(env!("CARGO_MANIFEST_DIR"));
+//     let mut file = File::create(here.join("tests/text_mode/test.md"))?;
+//     writeln!(file, "en\t123")?;
+//     writeln!(file, "中文\t123")?;
+//     Ok(())
+// }

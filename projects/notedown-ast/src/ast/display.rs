@@ -6,6 +6,7 @@ impl Debug for NotedownTerm {
             NotedownTerm::Heading(v) => Debug::fmt(v, f),
             NotedownTerm::Paragraph(v) => Debug::fmt(v, f),
             NotedownTerm::SpaceBreak(v) => Debug::fmt(v, f),
+            NotedownTerm::MathBlock(v) => Debug::fmt(v, f),
         }
     }
 }
@@ -39,6 +40,8 @@ impl Debug for ParagraphTerm {
             ParagraphTerm::Code(v) => Debug::fmt(v, f),
             ParagraphTerm::CommandLine(v) => Debug::fmt(v, f),
             ParagraphTerm::Uri(v) => Debug::fmt(v, f),
+            ParagraphTerm::DisplayMath(v) => Debug::fmt(v, f),
+            ParagraphTerm::InlineMath(v) => Debug::fmt(v, f),
         }
     }
 }
