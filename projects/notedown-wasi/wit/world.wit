@@ -8,99 +8,108 @@ world host {
 }
 
 interface types {
-    record text-range {
-        head-offset: u32,
-        tail-offset: u32,
-    }
-    resource language {
-        get-language-name: func() -> string;
-        get-glob-pattern: func() -> list<string>;
-    }
+resource url {
 
-    variant parse-error {
-        missing-root,
-        invalid-rule(invalid-rule),
-        invalid-tag(invalid-tag),
-        custom(custom-error),
-    }
-
-    record invalid-tag {
-        found : list<string>,
-        expect: list<string>,
-        range : text-range,
-    }
-
-    record invalid-rule {
-        found : list<string>,
-        expect: list<string>,
-        range : text-range,
-    }
-
-    record custom-error {
-        message: string,
-        range  : text-range,
-    }
+}
+record text-range {
+    head-offset: u32,
+    tail-offset: u32,
+}
 }
 
-interface cst {
-    use types.{text-range, language};
+interface syntax-tree {
+use types.{text-range, language, url};
 
-    flags snytax-flags {
-        /// A leaf node does not have any child nodes
-        leaf,
-        /// A ignore node does not have tag
-        ignore,
-        comment,
-        comment-inline,
-        comment-block,
-        comment-documentation,
-    }
+hack-unused: func() -> notedown-root;
 
-    resource syntax-rule {
-        get-flags    : func() -> snytax-flags;
-        get-language : func() -> language;
-        get-rule-name: func() -> string;
-        get-styles   : func() -> list<string>;
-    }
+record notedown-root {
+    blocks: list<any-blocks>,
+    span: text-span,
+    path: option<url>
+}
 
-    resource syntax-node {
-        get-range: func() -> text-range;
-        /// Labeling of nodes
-        /// If this is a union node, tag represents branch tag
-        /// If this is a class node, tag means node tag
-        /// An empty string is equivalent to no tag
-        get-tag: func() -> string;
-        has-tag: func(name: string) -> bool;
-        get-rule: func() -> syntax-rule;
-        get-text: func() -> string;
-        has-parent: func() -> bool;
-        get-parent: func() -> option<syntax-node>;
-        get-ancestors: func(include-self: bool) -> syntax-iterator;
-        get-last: func() -> option<syntax-node>;
-        get-last-iterator: func(include-self: bool) -> syntax-iterator;
-        get-next: func() -> option<syntax-node>;
-        get-next-iterator: func(include-self: bool) -> syntax-iterator;
-        get-sibling-head: func() -> option<syntax-node>;
-        get-sibling-tail: func() -> option<syntax-node>;
-        get-siblings: func(reversed: bool) -> syntax-iterator;
-        has-child: func() -> bool;
-        count-children: func() -> u32;
-        get-child-head: func() -> option<syntax-node>;
-        get-child-tail: func() -> option<syntax-node>;
-        get-children: func(reversed: bool) -> syntax-iterator;
-        get-descendants: func(depth-first: bool, reversed: bool) -> syntax-iterator;
-    }
+//     Heading(Box<HeadingSpan>),
+//     Paragraph(Box<ParagraphSpan>),
+//     SpaceBreak(Box<ParagraphBreakSpan>),
+//     MathBlock(Box<DisplayMathSpan>),
+record any-block {
+    %type: any-block-type
+    span: text-span,
+}
 
-    resource syntax-iterator {
-        last: func() -> option<syntax-node>;
-        next: func() -> option<syntax-node>;
+variant any-block-type {
+    heading(heading-block),
+    horizontal-rule(horizontal-rule),
+    paragraph(paragraph-block),
+    space-break(space-break-block),
+    math-block(math-block),
+}
 
-        move-head: func();
-        move-tail: func();
+record heading-block {
+    level: u32,
+    title: paragraph-block,
+    span: text-span,
+}
 
-        skip    : func(count: u32);
-        reverse : func();
-    }
+record paragraph-block {
+
+}
+
+
+record space-break-block {
+
+}
+
+
+/// The math text written in the top block
+///
+/// ### Example
+/// ```note
+/// $$
+/// \int_0^\infty \frac{x^3}{e^x-1}\,dx = \frac{\pi^4}{
+/// 4}
+/// $$
+/// ```
+record math-block {
+    %type: math-type
+    display: math-display,
+    math: string,
+    span: text-span,
+}
+/// The math text written in the paragraph
+///
+/// ### Example
+/// ```note
+/// The naunce of the universe is $6.022\times 10^{23}$
+/// ```
+record math-span {
+    display: math-display,
+    content: math-type
+    math: string,
+    span: text-span,
+}
+
+variant math-type {
+    /// MathML element
+    mathml,
+    /// TeX ompatible formulas, including `mathjax` and `katex`
+    tex,
+    asciimath,
+}
+
+variant math-display {
+    inline,
+    block
+}
+
+
+record horizontal-rule {
+    marks: string,
+    span: text-span,
+}
+
+
+
 }
 
 interface visitor {
