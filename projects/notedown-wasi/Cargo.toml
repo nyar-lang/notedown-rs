@@ -1,12 +1,12 @@
 [package]
 name = "notedown-wasi"
-version = "0.0.0"
+version = "0.0.1"
 authors = ["Aster <192607617@qq.com>"]
-description = "Yggdrasil Shared Structure"
+description = "Cross-language notedown sharing of intermediate representations"
 repository = "https://github.com/ygg-lang/yggdrasil-rs"
-documentation = "https://docs.rs/yggdrasil-rt"
-keywords = ["parser", "generator", "peg", "grammar"]
-categories = ["parsing"]
+documentation = "https://docs.rs/notedown-wasi"
+keywords = ["grammar"]
+categories = ["wasm", "compilers", "text-processing"]
 license = "MPL-2.0"
 readme = "readme.md"
 edition = "2021"
@@ -19,12 +19,6 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 url = "2.5.0"
 wit-bindgen = "0.23.0"
-
-
-[dev-dependencies]
-wit-parser = "0.202.0"
-wit-bindgen-core = "0.23.0"
-wit-bindgen-rust = "0.23.0"
 
 [features]
 default = []

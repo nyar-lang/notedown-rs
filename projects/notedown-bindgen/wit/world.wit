@@ -13,9 +13,6 @@ record text-range {
     head-offset: u32,
     tail-offset: u32,
 }
-enum notedown-error {
-    unknown,
-}
 }
 
 interface syntax-tree {

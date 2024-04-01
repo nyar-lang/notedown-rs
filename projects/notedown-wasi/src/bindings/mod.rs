@@ -9,10 +9,12 @@ impl crate::exports::notedown::core::types::Guest for NotedownHost {
 
 impl crate::exports::notedown::core::syntax_tree::Guest for NotedownHost {
     fn hack_unused() -> NotedownRoot {
-        todo!()
+        unreachable!()
     }
 }
 
-pub struct UrlNative {}
+pub struct UrlNative {
+    repr: url::Url,
+}
 
 impl GuestUrl for UrlNative {}
