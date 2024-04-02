@@ -2,248 +2,248 @@
 // Options used:
 #[allow(dead_code)]
 pub mod exports {
-  #[allow(dead_code)]
-  pub mod notedown {
     #[allow(dead_code)]
-    pub mod core {
-      #[allow(dead_code, clippy::all)]
-      pub mod types {
-        #[used]
-        #[doc(hidden)]
-        #[cfg(target_arch = "wasm32")]
-        static __FORCE_SECTION_REF: fn() = super::super::super::super::__link_custom_section_describing_imports;
+    pub mod notedown {
+        #[allow(dead_code)]
+        pub mod core {
+            #[allow(dead_code, clippy::all)]
+            pub mod types {
+                #[used]
+                #[doc(hidden)]
+                #[cfg(target_arch = "wasm32")]
+                static __FORCE_SECTION_REF: fn() = super::super::super::super::__link_custom_section_describing_imports;
 
-        use super::super::super::super::_rt;
+                use super::super::super::super::_rt;
 
-        #[derive(Debug)]
-        #[repr(transparent)]
-        pub struct Url {
-          handle: _rt::Resource<Url>,
-        }
+                #[derive(Debug)]
+                #[repr(transparent)]
+                pub struct Url {
+                    handle: _rt::Resource<Url>,
+                }
 
-        type _UrlRep<T> = Option<T>;
+                type _UrlRep<T> = Option<T>;
 
-        impl Url {
-          /// Creates a new resource from the specified
-          /// representation.
-          ///
-          /// This function will create a new resource handle by
-          /// moving `val` onto the heap and then
-          /// passing that heap pointer to the component model to
-          /// create a handle. The owned handle is then returned as
-          /// `Url`.
-          pub fn new<T: GuestUrl>(val: T) -> Self {
-            Self::type_guard::<T>();
-            let val: _UrlRep<T> = Some(val);
-            let ptr: *mut _UrlRep<T> = _rt::Box::into_raw(_rt::Box::new(val));
-            unsafe { Self::from_handle(T::_resource_new(ptr.cast())) }
-          }
+                impl Url {
+                    /// Creates a new resource from the specified
+                    /// representation.
+                    ///
+                    /// This function will create a new resource handle by
+                    /// moving `val` onto the heap and then
+                    /// passing that heap pointer to the component model to
+                    /// create a handle. The owned handle is then returned as
+                    /// `Url`.
+                    pub fn new<T: GuestUrl>(val: T) -> Self {
+                        Self::type_guard::<T>();
+                        let val: _UrlRep<T> = Some(val);
+                        let ptr: *mut _UrlRep<T> = _rt::Box::into_raw(_rt::Box::new(val));
+                        unsafe { Self::from_handle(T::_resource_new(ptr.cast())) }
+                    }
 
-          /// Gets access to the underlying `T` which represents this
-          /// resource.
-          pub fn get<T: GuestUrl>(&self) -> &T {
-            let ptr = unsafe { &*self.as_ptr::<T>() };
-            ptr.as_ref().unwrap()
-          }
+                    /// Gets access to the underlying `T` which represents this
+                    /// resource.
+                    pub fn get<T: GuestUrl>(&self) -> &T {
+                        let ptr = unsafe { &*self.as_ptr::<T>() };
+                        ptr.as_ref().unwrap()
+                    }
 
-          /// Gets mutable access to the underlying `T` which
-          /// represents this resource.
-          pub fn get_mut<T: GuestUrl>(&mut self) -> &mut T {
-            let ptr = unsafe { &mut *self.as_ptr::<T>() };
-            ptr.as_mut().unwrap()
-          }
+                    /// Gets mutable access to the underlying `T` which
+                    /// represents this resource.
+                    pub fn get_mut<T: GuestUrl>(&mut self) -> &mut T {
+                        let ptr = unsafe { &mut *self.as_ptr::<T>() };
+                        ptr.as_mut().unwrap()
+                    }
 
-          /// Consumes this resource and returns the underlying `T`.
-          pub fn into_inner<T: GuestUrl>(self) -> T {
-            let ptr = unsafe { &mut *self.as_ptr::<T>() };
-            ptr.take().unwrap()
-          }
+                    /// Consumes this resource and returns the underlying `T`.
+                    pub fn into_inner<T: GuestUrl>(self) -> T {
+                        let ptr = unsafe { &mut *self.as_ptr::<T>() };
+                        ptr.take().unwrap()
+                    }
 
-          #[doc(hidden)]
-          pub unsafe fn from_handle(handle: u32) -> Self {
-            Self { handle: _rt::Resource::from_handle(handle) }
-          }
+                    #[doc(hidden)]
+                    pub unsafe fn from_handle(handle: u32) -> Self {
+                        Self { handle: _rt::Resource::from_handle(handle) }
+                    }
 
-          #[doc(hidden)]
-          pub fn take_handle(&self) -> u32 {
-            _rt::Resource::take_handle(&self.handle)
-          }
+                    #[doc(hidden)]
+                    pub fn take_handle(&self) -> u32 {
+                        _rt::Resource::take_handle(&self.handle)
+                    }
 
-          #[doc(hidden)]
-          pub fn handle(&self) -> u32 {
-            _rt::Resource::handle(&self.handle)
-          }
+                    #[doc(hidden)]
+                    pub fn handle(&self) -> u32 {
+                        _rt::Resource::handle(&self.handle)
+                    }
 
-          // It's theoretically possible to implement the `GuestUrl` trait twice
-          // so guard against using it with two different types here.
-          #[doc(hidden)]
-          fn type_guard<T: 'static>() {
-            use core::any::TypeId;
-            static mut LAST_TYPE: Option<TypeId> = None;
-            unsafe {
-              assert!(!cfg!(target_feature = "threads"));
-              let id = TypeId::of::<T>();
-              match LAST_TYPE {
-                Some(ty) => assert!(ty == id, "cannot use two types with this resource type"),
-                None => LAST_TYPE = Some(id),
-              }
-            }
-          }
+                    // It's theoretically possible to implement the `GuestUrl` trait twice
+                    // so guard against using it with two different types here.
+                    #[doc(hidden)]
+                    fn type_guard<T: 'static>() {
+                        use core::any::TypeId;
+                        static mut LAST_TYPE: Option<TypeId> = None;
+                        unsafe {
+                            assert!(!cfg!(target_feature = "threads"));
+                            let id = TypeId::of::<T>();
+                            match LAST_TYPE {
+                                Some(ty) => assert!(ty == id, "cannot use two types with this resource type"),
+                                None => LAST_TYPE = Some(id),
+                            }
+                        }
+                    }
 
-          #[doc(hidden)]
-          pub unsafe fn dtor<T: 'static>(handle: *mut u8) {
-            Self::type_guard::<T>();
-            let _ = _rt::Box::from_raw(handle as *mut _UrlRep<T>);
-          }
+                    #[doc(hidden)]
+                    pub unsafe fn dtor<T: 'static>(handle: *mut u8) {
+                        Self::type_guard::<T>();
+                        let _ = _rt::Box::from_raw(handle as *mut _UrlRep<T>);
+                    }
 
-          fn as_ptr<T: GuestUrl>(&self) -> *mut _UrlRep<T> {
-            Url::type_guard::<T>();
-            T::_resource_rep(self.handle()).cast()
-          }
-        }
+                    fn as_ptr<T: GuestUrl>(&self) -> *mut _UrlRep<T> {
+                        Url::type_guard::<T>();
+                        T::_resource_rep(self.handle()).cast()
+                    }
+                }
 
-        /// A borrowed version of [`Url`] which represents a borrowed
-        /// value with the lifetime `'a`.
-        #[derive(Debug)]
-        #[repr(transparent)]
-        pub struct UrlBorrow<'a> {
-          rep: *mut u8,
-          _marker: core::marker::PhantomData<&'a Url>,
-        }
+                /// A borrowed version of [`Url`] which represents a borrowed
+                /// value with the lifetime `'a`.
+                #[derive(Debug)]
+                #[repr(transparent)]
+                pub struct UrlBorrow<'a> {
+                    rep: *mut u8,
+                    _marker: core::marker::PhantomData<&'a Url>,
+                }
 
-        impl<'a> UrlBorrow<'a> {
-          #[doc(hidden)]
-          pub unsafe fn lift(rep: usize) -> Self {
-            Self { rep: rep as *mut u8, _marker: core::marker::PhantomData }
-          }
+                impl<'a> UrlBorrow<'a> {
+                    #[doc(hidden)]
+                    pub unsafe fn lift(rep: usize) -> Self {
+                        Self { rep: rep as *mut u8, _marker: core::marker::PhantomData }
+                    }
 
-          /// Gets access to the underlying `T` in this resource.
-          pub fn get<T: GuestUrl>(&self) -> &T {
-            let ptr = unsafe { &mut *self.as_ptr::<T>() };
-            ptr.as_ref().unwrap()
-          }
+                    /// Gets access to the underlying `T` in this resource.
+                    pub fn get<T: GuestUrl>(&self) -> &T {
+                        let ptr = unsafe { &mut *self.as_ptr::<T>() };
+                        ptr.as_ref().unwrap()
+                    }
 
-          // NB: mutable access is not allowed due to the component model allowing
-          // multiple borrows of the same resource.
+                    // NB: mutable access is not allowed due to the component model allowing
+                    // multiple borrows of the same resource.
 
-          fn as_ptr<T: 'static>(&self) -> *mut _UrlRep<T> {
-            Url::type_guard::<T>();
-            self.rep.cast()
-          }
-        }
+                    fn as_ptr<T: 'static>(&self) -> *mut _UrlRep<T> {
+                        Url::type_guard::<T>();
+                        self.rep.cast()
+                    }
+                }
 
-        unsafe impl _rt::WasmResource for Url {
-          #[inline]
-          unsafe fn drop(_handle: u32) {
-            #[cfg(not(target_arch = "wasm32"))]
-            unreachable!();
+                unsafe impl _rt::WasmResource for Url {
+                    #[inline]
+                    unsafe fn drop(_handle: u32) {
+                        #[cfg(not(target_arch = "wasm32"))]
+                        unreachable!();
 
-            #[cfg(target_arch = "wasm32")]
-            {
-              #[link(wasm_import_module = "[export]notedown:core/types@0.1.0")]
-              extern "C" {
-                #[link_name = "[resource-drop]url"]
-                fn drop(_: u32);
-              }
+                        #[cfg(target_arch = "wasm32")]
+                        {
+                            #[link(wasm_import_module = "[export]notedown:core/types@0.1.0")]
+                            extern "C" {
+                                #[link_name = "[resource-drop]url"]
+                                fn drop(_: u32);
+                            }
 
-              drop(_handle);
-            }
-          }
-        }
+                            drop(_handle);
+                        }
+                    }
+                }
 
-        #[repr(C)]
-        #[derive(Clone, Copy)]
-        pub struct TextRange {
-          pub head_offset: u32,
-          pub tail_offset: u32,
-        }
+                #[repr(C)]
+                #[derive(Clone, Copy)]
+                pub struct TextRange {
+                    pub head_offset: u32,
+                    pub tail_offset: u32,
+                }
 
-        impl ::core::fmt::Debug for TextRange {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_struct("TextRange").field("head-offset", &self.head_offset).field("tail-offset", &self.tail_offset).finish()
-          }
-        }
+                impl ::core::fmt::Debug for TextRange {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("TextRange").field("head-offset", &self.head_offset).field("tail-offset", &self.tail_offset).finish()
+                    }
+                }
 
-        #[repr(u8)]
-        #[derive(Clone, Copy, Eq, PartialEq)]
-        pub enum NotedownError {
-          Unknown,
-        }
+                #[repr(u8)]
+                #[derive(Clone, Copy, Eq, PartialEq)]
+                pub enum NotedownError {
+                    Unknown,
+                }
 
-        impl ::core::fmt::Debug for NotedownError {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            match self {
-              NotedownError::Unknown => f.debug_tuple("NotedownError::Unknown").finish(),
-            }
-          }
-        }
+                impl ::core::fmt::Debug for NotedownError {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        match self {
+                            NotedownError::Unknown => f.debug_tuple("NotedownError::Unknown").finish(),
+                        }
+                    }
+                }
 
-        impl NotedownError {
-          pub(crate) unsafe fn _lift(val: u8) -> NotedownError {
-            if !cfg!(debug_assertions) {
-              return ::core::mem::transmute(val);
-            }
+                impl NotedownError {
+                    pub(crate) unsafe fn _lift(val: u8) -> NotedownError {
+                        if !cfg!(debug_assertions) {
+                            return ::core::mem::transmute(val);
+                        }
 
-            match val {
-              0 => NotedownError::Unknown,
+                        match val {
+                            0 => NotedownError::Unknown,
 
-              _ => panic!("invalid enum discriminant"),
-            }
-          }
-        }
+                            _ => panic!("invalid enum discriminant"),
+                        }
+                    }
+                }
 
-        pub trait Guest {
-          type Url: GuestUrl;
-        }
+                pub trait Guest {
+                    type Url: GuestUrl;
+                }
 
-        pub trait GuestUrl: 'static {
-          #[doc(hidden)]
-          unsafe fn _resource_new(val: *mut u8) -> u32
-            where
-                Self: Sized,
-          {
-            #[cfg(not(target_arch = "wasm32"))]
-            {
-              let _ = val;
-              unreachable!();
-            }
+                pub trait GuestUrl: 'static {
+                    #[doc(hidden)]
+                    unsafe fn _resource_new(val: *mut u8) -> u32
+                        where
+                            Self: Sized,
+                    {
+                        #[cfg(not(target_arch = "wasm32"))]
+                        {
+                            let _ = val;
+                            unreachable!();
+                        }
 
-            #[cfg(target_arch = "wasm32")]
-            {
-              #[link(wasm_import_module = "[export]notedown:core/types@0.1.0")]
-              extern "C" {
-                #[link_name = "[resource-new]url"]
-                fn new(_: *mut u8) -> u32;
-              }
-              new(val)
-            }
-          }
+                        #[cfg(target_arch = "wasm32")]
+                        {
+                            #[link(wasm_import_module = "[export]notedown:core/types@0.1.0")]
+                            extern "C" {
+                                #[link_name = "[resource-new]url"]
+                                fn new(_: *mut u8) -> u32;
+                            }
+                            new(val)
+                        }
+                    }
 
-          #[doc(hidden)]
-          fn _resource_rep(handle: u32) -> *mut u8
-            where
-                Self: Sized,
-          {
-            #[cfg(not(target_arch = "wasm32"))]
-            {
-              let _ = handle;
-              unreachable!();
-            }
+                    #[doc(hidden)]
+                    fn _resource_rep(handle: u32) -> *mut u8
+                        where
+                            Self: Sized,
+                    {
+                        #[cfg(not(target_arch = "wasm32"))]
+                        {
+                            let _ = handle;
+                            unreachable!();
+                        }
 
-            #[cfg(target_arch = "wasm32")]
-            {
-              #[link(wasm_import_module = "[export]notedown:core/types@0.1.0")]
-              extern "C" {
-                #[link_name = "[resource-rep]url"]
-                fn rep(_: u32) -> *mut u8;
-              }
-              unsafe { rep(handle) }
-            }
-          }
-        }
-        #[doc(hidden)]
+                        #[cfg(target_arch = "wasm32")]
+                        {
+                            #[link(wasm_import_module = "[export]notedown:core/types@0.1.0")]
+                            extern "C" {
+                                #[link_name = "[resource-rep]url"]
+                                fn rep(_: u32) -> *mut u8;
+                            }
+                            unsafe { rep(handle) }
+                        }
+                    }
+                }
+                #[doc(hidden)]
 
-        macro_rules! __export_notedown_core_types_0_1_0_cabi {
+                macro_rules! __export_notedown_core_types_0_1_0_cabi {
           ($ty:ident with_types_in $($path_to_types:tt)*) => (const _: () = {
 
 
@@ -260,35 +260,260 @@ pub mod exports {
 
           };);
         }
-        #[doc(hidden)]
-        pub(crate) use __export_notedown_core_types_0_1_0_cabi;
-      }
+                #[doc(hidden)]
+                pub(crate) use __export_notedown_core_types_0_1_0_cabi;
+            }
 
-      #[allow(dead_code, clippy::all)]
-      pub mod syntax_tree {
-        #[used]
-        #[doc(hidden)]
-        #[cfg(target_arch = "wasm32")]
-        static __FORCE_SECTION_REF: fn() = super::super::super::super::__link_custom_section_describing_imports;
+            #[allow(dead_code, clippy::all)]
+            pub mod syntax_tree {
+                #[used]
+                #[doc(hidden)]
+                #[cfg(target_arch = "wasm32")]
+                static __FORCE_SECTION_REF: fn() = super::super::super::super::__link_custom_section_describing_imports;
 
-        use super::super::super::super::_rt;
+                use super::super::super::super::_rt;
 
-        pub type TextRange = super::super::super::super::exports::notedown::core::types::TextRange;
-        pub type Url = super::super::super::super::exports::notedown::core::types::Url;
-        pub type UrlBorrow<'a> = super::super::super::super::exports::notedown::core::types::UrlBorrow<'a>;
+                pub type TextRange = super::super::super::super::exports::notedown::core::types::TextRange;
+                pub type Url = super::super::super::super::exports::notedown::core::types::Url;
+                pub type UrlBorrow<'a> = super::super::super::super::exports::notedown::core::types::UrlBorrow<'a>;
 
-        #[derive(Clone)]
-        pub struct NormalText {
-          pub text: _rt::String,
-          pub range: TextRange,
-        }
+                /// === line breaks ===
+                /// -----------------------------------------------------------------------------
+                /// The line break block
+                /// ```note
+                /// ===
+                /// ````
+                #[repr(C)]
+                #[derive(Clone, Copy)]
+                pub struct HorizontalRule {
+                    pub lines: u32,
+                    pub range: TextRange,
+                }
 
-        impl ::core::fmt::Debug for NormalText {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_struct("NormalText").field("text", &self.text).field("range", &self.range).finish()
-          }
-        }
-        wit_bindgen::rt::bitflags::bitflags! {
+                impl ::core::fmt::Debug for HorizontalRule {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("HorizontalRule").field("lines", &self.lines).field("range", &self.range).finish()
+                    }
+                }
+
+                #[repr(C)]
+                #[derive(Clone, Copy)]
+                pub struct BreaklineBlock {
+                    pub lines: u32,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for BreaklineBlock {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("BreaklineBlock").field("lines", &self.lines).field("range", &self.range).finish()
+                    }
+                }
+
+                /// The math text written in the paragraph
+                ///
+                /// ### Example
+                /// ````note
+                /// ```language
+                /// highlight
+                /// ```
+                /// ````
+                #[derive(Clone)]
+                pub struct CodeHighlight {
+                    pub language: _rt::String,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for CodeHighlight {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("CodeHighlight").field("language", &self.language).field("range", &self.range).finish()
+                    }
+                }
+
+                #[derive(Clone)]
+                pub enum CodeAction {
+                    /// In-line anonymous highlighting
+                    Anonymous,
+                    Highlight(CodeHighlight),
+                }
+
+                impl ::core::fmt::Debug for CodeAction {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        match self {
+                            CodeAction::Anonymous => f.debug_tuple("CodeAction::Anonymous").finish(),
+                            CodeAction::Highlight(e) => f.debug_tuple("CodeAction::Highlight").field(e).finish(),
+                        }
+                    }
+                }
+
+                /// === line breaks ===
+                /// -----------------------------------------------------------------------------
+                /// The math text written in the paragraph
+                ///
+                /// ### Example
+                /// ````note
+                /// ```code(key: args)
+                /// ```
+                /// ````
+                #[derive(Clone)]
+                pub struct CodeEnvironment {
+                    pub action: CodeAction,
+                    pub lines: _rt::String,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for CodeEnvironment {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("CodeEnvironment")
+                            .field("action", &self.action)
+                            .field("lines", &self.lines)
+                            .field("range", &self.range)
+                            .finish()
+                    }
+                }
+
+                #[derive(Clone, Copy)]
+                pub enum MathDisplay {
+                    Inline,
+                    Block,
+                }
+
+                impl ::core::fmt::Debug for MathDisplay {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        match self {
+                            MathDisplay::Inline => f.debug_tuple("MathDisplay::Inline").finish(),
+                            MathDisplay::Block => f.debug_tuple("MathDisplay::Block").finish(),
+                        }
+                    }
+                }
+
+                #[derive(Clone)]
+                pub enum MathContent {
+                    /// MathML element
+                    Mathml(_rt::String),
+                    /// TeX ompatible formulas, including `mathjax` and `katex`
+                    Tex(_rt::String),
+                    Asciimath(_rt::String),
+                }
+
+                impl ::core::fmt::Debug for MathContent {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        match self {
+                            MathContent::Mathml(e) => f.debug_tuple("MathContent::Mathml").field(e).finish(),
+                            MathContent::Tex(e) => f.debug_tuple("MathContent::Tex").field(e).finish(),
+                            MathContent::Asciimath(e) => f.debug_tuple("MathContent::Asciimath").field(e).finish(),
+                        }
+                    }
+                }
+
+                /// === line breaks ===
+                /// -----------------------------------------------------------------------------
+                /// The math text written in the paragraph
+                ///
+                /// ### Example
+                /// ```note
+                /// The naunce of the universe is $6.022\times 10^{23}$
+                /// ```
+                #[derive(Clone)]
+                pub struct MathEnvironment {
+                    pub display: MathDisplay,
+                    pub content: MathContent,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for MathEnvironment {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("MathEnvironment")
+                            .field("display", &self.display)
+                            .field("content", &self.content)
+                            .field("range", &self.range)
+                            .finish()
+                    }
+                }
+
+                #[repr(C)]
+                #[derive(Clone, Copy)]
+                pub struct ListItem {
+                    pub level: u32,
+                    /// content: list<paragraph-block>,
+                    pub checked: Option<bool>,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for ListItem {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("ListItem")
+                            .field("level", &self.level)
+                            .field("checked", &self.checked)
+                            .field("range", &self.range)
+                            .finish()
+                    }
+                }
+
+                /// === line breaks ===
+                /// -----------------------------------------------------------------------------
+                #[derive(Clone)]
+                pub struct ListEnvironment {
+                    pub items: _rt::Vec<ListItem>,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for ListEnvironment {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("ListEnvironment").field("items", &self.items).field("range", &self.range).finish()
+                    }
+                }
+
+                #[repr(C)]
+                #[derive(Clone, Copy)]
+                pub struct TableCell {
+                    /// content: paragraph-block,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for TableCell {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("TableCell").field("range", &self.range).finish()
+                    }
+                }
+
+                #[derive(Clone)]
+                pub struct TableRow {
+                    pub cells: _rt::Vec<TableCell>,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for TableRow {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("TableRow").field("cells", &self.cells).field("range", &self.range).finish()
+                    }
+                }
+
+                /// === line breaks ===
+                /// -----------------------------------------------------------------------------
+                #[derive(Clone)]
+                pub struct TableEnvironment {
+                    pub rows: _rt::Vec<TableRow>,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for TableEnvironment {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("TableEnvironment").field("rows", &self.rows).field("range", &self.range).finish()
+                    }
+                }
+
+                #[derive(Clone)]
+                pub struct NormalText {
+                    pub text: _rt::String,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for NormalText {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("NormalText").field("text", &self.text).field("range", &self.range).finish()
+                    }
+                }
+                wit_bindgen::rt::bitflags::bitflags! {
                   #[derive(PartialEq, Eq, PartialOrd, Ord, Hash, Debug, Clone, Copy)]
                   pub struct StyleType: u8 {
                     const BOLD = 1 << 0;
@@ -297,867 +522,921 @@ pub mod exports {
                     const STRIKETHROUGH = 1 << 3;
                   }
                 }
-        #[repr(C)]
-        #[derive(Clone, Copy)]
-        pub struct StyledText {
-          pub type_: StyleType,
-          /// items: list<paragraph-item>,
-          pub range: TextRange,
-        }
-
-        impl ::core::fmt::Debug for StyledText {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_struct("StyledText").field("type", &self.type_).field("range", &self.range).finish()
-          }
-        }
-
-        /// === line breaks ===
-        /// -----------------------------------------------------------------------------
-        /// The line break block
-        /// ```note
-        /// ===
-        /// ````
-        #[repr(C)]
-        #[derive(Clone, Copy)]
-        pub struct HorizontalRule {
-          pub lines: u32,
-          pub range: TextRange,
-        }
-
-        impl ::core::fmt::Debug for HorizontalRule {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_struct("HorizontalRule").field("lines", &self.lines).field("range", &self.range).finish()
-          }
-        }
-
-        #[repr(C)]
-        #[derive(Clone, Copy)]
-        pub struct BreaklineBlock {
-          pub lines: u32,
-          pub range: TextRange,
-        }
-
-        impl ::core::fmt::Debug for BreaklineBlock {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_struct("BreaklineBlock").field("lines", &self.lines).field("range", &self.range).finish()
-          }
-        }
-
-        /// The math text written in the paragraph
-        ///
-        /// ### Example
-        /// ````note
-        /// ```language
-        /// highlight
-        /// ```
-        /// ````
-        #[derive(Clone)]
-        pub struct CodeHighlight {
-          pub language: _rt::String,
-          pub range: TextRange,
-        }
-
-        impl ::core::fmt::Debug for CodeHighlight {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_struct("CodeHighlight").field("language", &self.language).field("range", &self.range).finish()
-          }
-        }
-
-        #[derive(Clone)]
-        pub enum CodeAction {
-          Inine,
-          Highlight(CodeHighlight),
-        }
-
-        impl ::core::fmt::Debug for CodeAction {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            match self {
-              CodeAction::Inine => f.debug_tuple("CodeAction::Inine").finish(),
-              CodeAction::Highlight(e) => f.debug_tuple("CodeAction::Highlight").field(e).finish(),
-            }
-          }
-        }
-
-        /// === line breaks ===
-        /// -----------------------------------------------------------------------------
-        /// The math text written in the paragraph
-        ///
-        /// ### Example
-        /// ````note
-        /// ```code(key: args)
-        /// ```
-        /// ````
-        #[derive(Clone)]
-        pub struct CodeSpan {
-          pub action: CodeAction,
-          pub lines: _rt::String,
-          pub range: TextRange,
-        }
-
-        impl ::core::fmt::Debug for CodeSpan {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_struct("CodeSpan")
-                .field("action", &self.action)
-                .field("lines", &self.lines)
-                .field("range", &self.range)
-                .finish()
-          }
-        }
-
-        #[derive(Clone, Copy)]
-        pub enum MathDisplay {
-          Inline,
-          Block,
-        }
-
-        impl ::core::fmt::Debug for MathDisplay {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            match self {
-              MathDisplay::Inline => f.debug_tuple("MathDisplay::Inline").finish(),
-              MathDisplay::Block => f.debug_tuple("MathDisplay::Block").finish(),
-            }
-          }
-        }
-
-        #[derive(Clone)]
-        pub enum MathContent {
-          /// MathML element
-          Mathml(_rt::String),
-          /// TeX ompatible formulas, including `mathjax` and `katex`
-          Tex(_rt::String),
-          Asciimath(_rt::String),
-        }
-
-        impl ::core::fmt::Debug for MathContent {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            match self {
-              MathContent::Mathml(e) => f.debug_tuple("MathContent::Mathml").field(e).finish(),
-              MathContent::Tex(e) => f.debug_tuple("MathContent::Tex").field(e).finish(),
-              MathContent::Asciimath(e) => f.debug_tuple("MathContent::Asciimath").field(e).finish(),
-            }
-          }
-        }
-
-        /// === line breaks ===
-        /// -----------------------------------------------------------------------------
-        /// The math text written in the paragraph
-        ///
-        /// ### Example
-        /// ```note
-        /// The naunce of the universe is $6.022\times 10^{23}$
-        /// ```
-        #[derive(Clone)]
-        pub struct MathSpan {
-          pub display: MathDisplay,
-          pub content: MathContent,
-          pub range: TextRange,
-        }
-
-        impl ::core::fmt::Debug for MathSpan {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_struct("MathSpan")
-                .field("display", &self.display)
-                .field("content", &self.content)
-                .field("range", &self.range)
-                .finish()
-          }
-        }
-
-        #[derive(Clone)]
-        pub enum ParagraphItem {
-          Text(NormalText),
-          Style(StyledText),
-          Math(MathSpan),
-          Code(CodeSpan),
-        }
-
-        impl ::core::fmt::Debug for ParagraphItem {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            match self {
-              ParagraphItem::Text(e) => f.debug_tuple("ParagraphItem::Text").field(e).finish(),
-              ParagraphItem::Style(e) => f.debug_tuple("ParagraphItem::Style").field(e).finish(),
-              ParagraphItem::Math(e) => f.debug_tuple("ParagraphItem::Math").field(e).finish(),
-              ParagraphItem::Code(e) => f.debug_tuple("ParagraphItem::Code").field(e).finish(),
-            }
-          }
-        }
-
-        #[derive(Clone)]
-        pub struct ParagraphBlock {
-          pub terms: _rt::Vec<ParagraphItem>,
-          pub range: TextRange,
-        }
-
-        impl ::core::fmt::Debug for ParagraphBlock {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_struct("ParagraphBlock").field("terms", &self.terms).field("range", &self.range).finish()
-          }
-        }
-
-        /// === title block ===
-        /// -----------------------------------------------------------------------------
-        #[derive(Clone)]
-        pub struct HeadingBlock {
-          pub level: u32,
-          pub title: ParagraphBlock,
-          pub range: TextRange,
-        }
-
-        impl ::core::fmt::Debug for HeadingBlock {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_struct("HeadingBlock")
-                .field("level", &self.level)
-                .field("title", &self.title)
-                .field("range", &self.range)
-                .finish()
-          }
-        }
-
-        #[derive(Clone)]
-        pub enum RootItem {
-          Heading(HeadingBlock),
-          HorizontalRule(HorizontalRule),
-          Paragraph(ParagraphBlock),
-          SpaceBreak(BreaklineBlock),
-          CodeBlock(CodeSpan),
-          MathBlock(MathSpan),
-        }
-
-        impl ::core::fmt::Debug for RootItem {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            match self {
-              RootItem::Heading(e) => f.debug_tuple("RootItem::Heading").field(e).finish(),
-              RootItem::HorizontalRule(e) => f.debug_tuple("RootItem::HorizontalRule").field(e).finish(),
-              RootItem::Paragraph(e) => f.debug_tuple("RootItem::Paragraph").field(e).finish(),
-              RootItem::SpaceBreak(e) => f.debug_tuple("RootItem::SpaceBreak").field(e).finish(),
-              RootItem::CodeBlock(e) => f.debug_tuple("RootItem::CodeBlock").field(e).finish(),
-              RootItem::MathBlock(e) => f.debug_tuple("RootItem::MathBlock").field(e).finish(),
-            }
-          }
-        }
-
-        pub struct NotedownRoot {
-          pub blocks: _rt::Vec<RootItem>,
-          pub path: Option<Url>,
-        }
-
-        impl ::core::fmt::Debug for NotedownRoot {
-          fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_struct("NotedownRoot").field("blocks", &self.blocks).field("path", &self.path).finish()
-          }
-        }
-
-        #[doc(hidden)]
-        #[allow(non_snake_case)]
-        pub unsafe fn _export_hack_unused_cabi<T: Guest>() -> *mut u8 {
-          #[cfg(target_arch = "wasm32")]
-          _rt::run_ctors_once();
-          let result0 = T::hack_unused();
-          let ptr1 = _RET_AREA.0.as_mut_ptr().cast::<u8>();
-          let NotedownRoot { blocks: blocks2, path: path2 } = result0;
-          let vec60 = blocks2;
-          let len60 = vec60.len();
-          let layout60 = _rt::alloc::Layout::from_size_align_unchecked(vec60.len() * 40, 4);
-          let result60 = if layout60.size() != 0 {
-            let ptr = _rt::alloc::alloc(layout60).cast::<u8>();
-            if ptr.is_null() {
-              _rt::alloc::handle_alloc_error(layout60);
-            }
-            ptr
-          } else {
-            { ::core::ptr::null_mut() }
-          };
-          for (i, e) in vec60.into_iter().enumerate() {
-            let base = result60.add(i * 40);
-            {
-              match e {
-                RootItem::Heading(e) => {
-                  *base.add(0).cast::<u8>() = (0i32) as u8;
-                  let HeadingBlock { level: level3, title: title3, range: range3 } = e;
-                  *base.add(4).cast::<i32>() = _rt::as_i32(level3);
-                  let ParagraphBlock { terms: terms4, range: range4 } = title3;
-                  let vec22 = terms4;
-                  let len22 = vec22.len();
-                  let layout22 = _rt::alloc::Layout::from_size_align_unchecked(vec22.len() * 40, 4);
-                  let result22 = if layout22.size() != 0 {
-                    let ptr = _rt::alloc::alloc(layout22).cast::<u8>();
-                    if ptr.is_null() {
-                      _rt::alloc::handle_alloc_error(layout22);
-                    }
-                    ptr
-                  } else {
-                    { ::core::ptr::null_mut() }
-                  };
-                  for (i, e) in vec22.into_iter().enumerate() {
-                    let base = result22.add(i * 40);
-                    {
-                      match e {
-                        ParagraphItem::Text(e) => {
-                          *base.add(0).cast::<u8>() = (0i32) as u8;
-                          let NormalText { text: text5, range: range5 } = e;
-                          let vec6 = (text5.into_bytes()).into_boxed_slice();
-                          let ptr6 = vec6.as_ptr().cast::<u8>();
-                          let len6 = vec6.len();
-                          ::core::mem::forget(vec6);
-                          *base.add(8).cast::<usize>() = len6;
-                          *base.add(4).cast::<*mut u8>() = ptr6.cast_mut();
-                          let super::super::super::super::exports::notedown::core::types::TextRange {
-                            head_offset: head_offset7,
-                            tail_offset: tail_offset7,
-                          } = range5;
-                          *base.add(12).cast::<i32>() = _rt::as_i32(head_offset7);
-                          *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset7);
-                        }
-                        ParagraphItem::Style(e) => {
-                          *base.add(0).cast::<u8>() = (1i32) as u8;
-                          let StyledText { type_: type_8, range: range8 } = e;
-                          let flags9 = type_8;
-                          *base.add(4).cast::<u8>() = ((flags9.bits() >> 0) as i32) as u8;
-                          let super::super::super::super::exports::notedown::core::types::TextRange {
-                            head_offset: head_offset10,
-                            tail_offset: tail_offset10,
-                          } = range8;
-                          *base.add(8).cast::<i32>() = _rt::as_i32(head_offset10);
-                          *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset10);
-                        }
-                        ParagraphItem::Math(e) => {
-                          *base.add(0).cast::<u8>() = (2i32) as u8;
-                          let MathSpan { display: display11, content: content11, range: range11 } = e;
-                          match display11 {
-                            MathDisplay::Inline => {
-                              *base.add(4).cast::<u8>() = (0i32) as u8;
-                            }
-                            MathDisplay::Block => {
-                              *base.add(4).cast::<u8>() = (1i32) as u8;
-                            }
-                          }
-                          match content11 {
-                            MathContent::Mathml(e) => {
-                              *base.add(8).cast::<u8>() = (0i32) as u8;
-                              let vec12 = (e.into_bytes()).into_boxed_slice();
-                              let ptr12 = vec12.as_ptr().cast::<u8>();
-                              let len12 = vec12.len();
-                              ::core::mem::forget(vec12);
-                              *base.add(16).cast::<usize>() = len12;
-                              *base.add(12).cast::<*mut u8>() = ptr12.cast_mut();
-                            }
-                            MathContent::Tex(e) => {
-                              *base.add(8).cast::<u8>() = (1i32) as u8;
-                              let vec13 = (e.into_bytes()).into_boxed_slice();
-                              let ptr13 = vec13.as_ptr().cast::<u8>();
-                              let len13 = vec13.len();
-                              ::core::mem::forget(vec13);
-                              *base.add(16).cast::<usize>() = len13;
-                              *base.add(12).cast::<*mut u8>() = ptr13.cast_mut();
-                            }
-                            MathContent::Asciimath(e) => {
-                              *base.add(8).cast::<u8>() = (2i32) as u8;
-                              let vec14 = (e.into_bytes()).into_boxed_slice();
-                              let ptr14 = vec14.as_ptr().cast::<u8>();
-                              let len14 = vec14.len();
-                              ::core::mem::forget(vec14);
-                              *base.add(16).cast::<usize>() = len14;
-                              *base.add(12).cast::<*mut u8>() = ptr14.cast_mut();
-                            }
-                          }
-                          let super::super::super::super::exports::notedown::core::types::TextRange {
-                            head_offset: head_offset15,
-                            tail_offset: tail_offset15,
-                          } = range11;
-                          *base.add(20).cast::<i32>() = _rt::as_i32(head_offset15);
-                          *base.add(24).cast::<i32>() = _rt::as_i32(tail_offset15);
-                        }
-                        ParagraphItem::Code(e) => {
-                          *base.add(0).cast::<u8>() = (3i32) as u8;
-                          let CodeSpan { action: action16, lines: lines16, range: range16 } = e;
-                          match action16 {
-                            CodeAction::Inine => {
-                              *base.add(4).cast::<u8>() = (0i32) as u8;
-                            }
-                            CodeAction::Highlight(e) => {
-                              *base.add(4).cast::<u8>() = (1i32) as u8;
-                              let CodeHighlight { language: language17, range: range17 } = e;
-                              let vec18 = (language17.into_bytes()).into_boxed_slice();
-                              let ptr18 = vec18.as_ptr().cast::<u8>();
-                              let len18 = vec18.len();
-                              ::core::mem::forget(vec18);
-                              *base.add(12).cast::<usize>() = len18;
-                              *base.add(8).cast::<*mut u8>() = ptr18.cast_mut();
-                              let super::super::super::super::exports::notedown::core::types::TextRange {
-                                head_offset: head_offset19,
-                                tail_offset: tail_offset19,
-                              } = range17;
-                              *base.add(16).cast::<i32>() = _rt::as_i32(head_offset19);
-                              *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset19);
-                            }
-                          }
-                          let vec20 = (lines16.into_bytes()).into_boxed_slice();
-                          let ptr20 = vec20.as_ptr().cast::<u8>();
-                          let len20 = vec20.len();
-                          ::core::mem::forget(vec20);
-                          *base.add(28).cast::<usize>() = len20;
-                          *base.add(24).cast::<*mut u8>() = ptr20.cast_mut();
-                          let super::super::super::super::exports::notedown::core::types::TextRange {
-                            head_offset: head_offset21,
-                            tail_offset: tail_offset21,
-                          } = range16;
-                          *base.add(32).cast::<i32>() = _rt::as_i32(head_offset21);
-                          *base.add(36).cast::<i32>() = _rt::as_i32(tail_offset21);
-                        }
-                      }
-                    }
-                  }
-                  *base.add(12).cast::<usize>() = len22;
-                  *base.add(8).cast::<*mut u8>() = result22;
-                  let super::super::super::super::exports::notedown::core::types::TextRange {
-                    head_offset: head_offset23,
-                    tail_offset: tail_offset23,
-                  } = range4;
-                  *base.add(16).cast::<i32>() = _rt::as_i32(head_offset23);
-                  *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset23);
-                  let super::super::super::super::exports::notedown::core::types::TextRange {
-                    head_offset: head_offset24,
-                    tail_offset: tail_offset24,
-                  } = range3;
-                  *base.add(24).cast::<i32>() = _rt::as_i32(head_offset24);
-                  *base.add(28).cast::<i32>() = _rt::as_i32(tail_offset24);
+                #[repr(C)]
+                #[derive(Clone, Copy)]
+                pub struct StyledText {
+                    pub type_: StyleType,
+                    /// items: list<paragraph-item>,
+                    pub range: TextRange,
                 }
-                RootItem::HorizontalRule(e) => {
-                  *base.add(0).cast::<u8>() = (1i32) as u8;
-                  let HorizontalRule { lines: lines25, range: range25 } = e;
-                  *base.add(4).cast::<i32>() = _rt::as_i32(lines25);
-                  let super::super::super::super::exports::notedown::core::types::TextRange {
-                    head_offset: head_offset26,
-                    tail_offset: tail_offset26,
-                  } = range25;
-                  *base.add(8).cast::<i32>() = _rt::as_i32(head_offset26);
-                  *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset26);
-                }
-                RootItem::Paragraph(e) => {
-                  *base.add(0).cast::<u8>() = (2i32) as u8;
-                  let ParagraphBlock { terms: terms27, range: range27 } = e;
-                  let vec45 = terms27;
-                  let len45 = vec45.len();
-                  let layout45 = _rt::alloc::Layout::from_size_align_unchecked(vec45.len() * 40, 4);
-                  let result45 = if layout45.size() != 0 {
-                    let ptr = _rt::alloc::alloc(layout45).cast::<u8>();
-                    if ptr.is_null() {
-                      _rt::alloc::handle_alloc_error(layout45);
-                    }
-                    ptr
-                  } else {
-                    { ::core::ptr::null_mut() }
-                  };
-                  for (i, e) in vec45.into_iter().enumerate() {
-                    let base = result45.add(i * 40);
-                    {
-                      match e {
-                        ParagraphItem::Text(e) => {
-                          *base.add(0).cast::<u8>() = (0i32) as u8;
-                          let NormalText { text: text28, range: range28 } = e;
-                          let vec29 = (text28.into_bytes()).into_boxed_slice();
-                          let ptr29 = vec29.as_ptr().cast::<u8>();
-                          let len29 = vec29.len();
-                          ::core::mem::forget(vec29);
-                          *base.add(8).cast::<usize>() = len29;
-                          *base.add(4).cast::<*mut u8>() = ptr29.cast_mut();
-                          let super::super::super::super::exports::notedown::core::types::TextRange {
-                            head_offset: head_offset30,
-                            tail_offset: tail_offset30,
-                          } = range28;
-                          *base.add(12).cast::<i32>() = _rt::as_i32(head_offset30);
-                          *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset30);
-                        }
-                        ParagraphItem::Style(e) => {
-                          *base.add(0).cast::<u8>() = (1i32) as u8;
-                          let StyledText { type_: type_31, range: range31 } = e;
-                          let flags32 = type_31;
-                          *base.add(4).cast::<u8>() = ((flags32.bits() >> 0) as i32) as u8;
-                          let super::super::super::super::exports::notedown::core::types::TextRange {
-                            head_offset: head_offset33,
-                            tail_offset: tail_offset33,
-                          } = range31;
-                          *base.add(8).cast::<i32>() = _rt::as_i32(head_offset33);
-                          *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset33);
-                        }
-                        ParagraphItem::Math(e) => {
-                          *base.add(0).cast::<u8>() = (2i32) as u8;
-                          let MathSpan { display: display34, content: content34, range: range34 } = e;
-                          match display34 {
-                            MathDisplay::Inline => {
-                              *base.add(4).cast::<u8>() = (0i32) as u8;
-                            }
-                            MathDisplay::Block => {
-                              *base.add(4).cast::<u8>() = (1i32) as u8;
-                            }
-                          }
-                          match content34 {
-                            MathContent::Mathml(e) => {
-                              *base.add(8).cast::<u8>() = (0i32) as u8;
-                              let vec35 = (e.into_bytes()).into_boxed_slice();
-                              let ptr35 = vec35.as_ptr().cast::<u8>();
-                              let len35 = vec35.len();
-                              ::core::mem::forget(vec35);
-                              *base.add(16).cast::<usize>() = len35;
-                              *base.add(12).cast::<*mut u8>() = ptr35.cast_mut();
-                            }
-                            MathContent::Tex(e) => {
-                              *base.add(8).cast::<u8>() = (1i32) as u8;
-                              let vec36 = (e.into_bytes()).into_boxed_slice();
-                              let ptr36 = vec36.as_ptr().cast::<u8>();
-                              let len36 = vec36.len();
-                              ::core::mem::forget(vec36);
-                              *base.add(16).cast::<usize>() = len36;
-                              *base.add(12).cast::<*mut u8>() = ptr36.cast_mut();
-                            }
-                            MathContent::Asciimath(e) => {
-                              *base.add(8).cast::<u8>() = (2i32) as u8;
-                              let vec37 = (e.into_bytes()).into_boxed_slice();
-                              let ptr37 = vec37.as_ptr().cast::<u8>();
-                              let len37 = vec37.len();
-                              ::core::mem::forget(vec37);
-                              *base.add(16).cast::<usize>() = len37;
-                              *base.add(12).cast::<*mut u8>() = ptr37.cast_mut();
-                            }
-                          }
-                          let super::super::super::super::exports::notedown::core::types::TextRange {
-                            head_offset: head_offset38,
-                            tail_offset: tail_offset38,
-                          } = range34;
-                          *base.add(20).cast::<i32>() = _rt::as_i32(head_offset38);
-                          *base.add(24).cast::<i32>() = _rt::as_i32(tail_offset38);
-                        }
-                        ParagraphItem::Code(e) => {
-                          *base.add(0).cast::<u8>() = (3i32) as u8;
-                          let CodeSpan { action: action39, lines: lines39, range: range39 } = e;
-                          match action39 {
-                            CodeAction::Inine => {
-                              *base.add(4).cast::<u8>() = (0i32) as u8;
-                            }
-                            CodeAction::Highlight(e) => {
-                              *base.add(4).cast::<u8>() = (1i32) as u8;
-                              let CodeHighlight { language: language40, range: range40 } = e;
-                              let vec41 = (language40.into_bytes()).into_boxed_slice();
-                              let ptr41 = vec41.as_ptr().cast::<u8>();
-                              let len41 = vec41.len();
-                              ::core::mem::forget(vec41);
-                              *base.add(12).cast::<usize>() = len41;
-                              *base.add(8).cast::<*mut u8>() = ptr41.cast_mut();
-                              let super::super::super::super::exports::notedown::core::types::TextRange {
-                                head_offset: head_offset42,
-                                tail_offset: tail_offset42,
-                              } = range40;
-                              *base.add(16).cast::<i32>() = _rt::as_i32(head_offset42);
-                              *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset42);
-                            }
-                          }
-                          let vec43 = (lines39.into_bytes()).into_boxed_slice();
-                          let ptr43 = vec43.as_ptr().cast::<u8>();
-                          let len43 = vec43.len();
-                          ::core::mem::forget(vec43);
-                          *base.add(28).cast::<usize>() = len43;
-                          *base.add(24).cast::<*mut u8>() = ptr43.cast_mut();
-                          let super::super::super::super::exports::notedown::core::types::TextRange {
-                            head_offset: head_offset44,
-                            tail_offset: tail_offset44,
-                          } = range39;
-                          *base.add(32).cast::<i32>() = _rt::as_i32(head_offset44);
-                          *base.add(36).cast::<i32>() = _rt::as_i32(tail_offset44);
-                        }
-                      }
-                    }
-                  }
-                  *base.add(8).cast::<usize>() = len45;
-                  *base.add(4).cast::<*mut u8>() = result45;
-                  let super::super::super::super::exports::notedown::core::types::TextRange {
-                    head_offset: head_offset46,
-                    tail_offset: tail_offset46,
-                  } = range27;
-                  *base.add(12).cast::<i32>() = _rt::as_i32(head_offset46);
-                  *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset46);
-                }
-                RootItem::SpaceBreak(e) => {
-                  *base.add(0).cast::<u8>() = (3i32) as u8;
-                  let BreaklineBlock { lines: lines47, range: range47 } = e;
-                  *base.add(4).cast::<i32>() = _rt::as_i32(lines47);
-                  let super::super::super::super::exports::notedown::core::types::TextRange {
-                    head_offset: head_offset48,
-                    tail_offset: tail_offset48,
-                  } = range47;
-                  *base.add(8).cast::<i32>() = _rt::as_i32(head_offset48);
-                  *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset48);
-                }
-                RootItem::CodeBlock(e) => {
-                  *base.add(0).cast::<u8>() = (4i32) as u8;
-                  let CodeSpan { action: action49, lines: lines49, range: range49 } = e;
-                  match action49 {
-                    CodeAction::Inine => {
-                      *base.add(4).cast::<u8>() = (0i32) as u8;
-                    }
-                    CodeAction::Highlight(e) => {
-                      *base.add(4).cast::<u8>() = (1i32) as u8;
-                      let CodeHighlight { language: language50, range: range50 } = e;
-                      let vec51 = (language50.into_bytes()).into_boxed_slice();
-                      let ptr51 = vec51.as_ptr().cast::<u8>();
-                      let len51 = vec51.len();
-                      ::core::mem::forget(vec51);
-                      *base.add(12).cast::<usize>() = len51;
-                      *base.add(8).cast::<*mut u8>() = ptr51.cast_mut();
-                      let super::super::super::super::exports::notedown::core::types::TextRange {
-                        head_offset: head_offset52,
-                        tail_offset: tail_offset52,
-                      } = range50;
-                      *base.add(16).cast::<i32>() = _rt::as_i32(head_offset52);
-                      *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset52);
-                    }
-                  }
-                  let vec53 = (lines49.into_bytes()).into_boxed_slice();
-                  let ptr53 = vec53.as_ptr().cast::<u8>();
-                  let len53 = vec53.len();
-                  ::core::mem::forget(vec53);
-                  *base.add(28).cast::<usize>() = len53;
-                  *base.add(24).cast::<*mut u8>() = ptr53.cast_mut();
-                  let super::super::super::super::exports::notedown::core::types::TextRange {
-                    head_offset: head_offset54,
-                    tail_offset: tail_offset54,
-                  } = range49;
-                  *base.add(32).cast::<i32>() = _rt::as_i32(head_offset54);
-                  *base.add(36).cast::<i32>() = _rt::as_i32(tail_offset54);
-                }
-                RootItem::MathBlock(e) => {
-                  *base.add(0).cast::<u8>() = (5i32) as u8;
-                  let MathSpan { display: display55, content: content55, range: range55 } = e;
-                  match display55 {
-                    MathDisplay::Inline => {
-                      *base.add(4).cast::<u8>() = (0i32) as u8;
-                    }
-                    MathDisplay::Block => {
-                      *base.add(4).cast::<u8>() = (1i32) as u8;
-                    }
-                  }
-                  match content55 {
-                    MathContent::Mathml(e) => {
-                      *base.add(8).cast::<u8>() = (0i32) as u8;
-                      let vec56 = (e.into_bytes()).into_boxed_slice();
-                      let ptr56 = vec56.as_ptr().cast::<u8>();
-                      let len56 = vec56.len();
-                      ::core::mem::forget(vec56);
-                      *base.add(16).cast::<usize>() = len56;
-                      *base.add(12).cast::<*mut u8>() = ptr56.cast_mut();
-                    }
-                    MathContent::Tex(e) => {
-                      *base.add(8).cast::<u8>() = (1i32) as u8;
-                      let vec57 = (e.into_bytes()).into_boxed_slice();
-                      let ptr57 = vec57.as_ptr().cast::<u8>();
-                      let len57 = vec57.len();
-                      ::core::mem::forget(vec57);
-                      *base.add(16).cast::<usize>() = len57;
-                      *base.add(12).cast::<*mut u8>() = ptr57.cast_mut();
-                    }
-                    MathContent::Asciimath(e) => {
-                      *base.add(8).cast::<u8>() = (2i32) as u8;
-                      let vec58 = (e.into_bytes()).into_boxed_slice();
-                      let ptr58 = vec58.as_ptr().cast::<u8>();
-                      let len58 = vec58.len();
-                      ::core::mem::forget(vec58);
-                      *base.add(16).cast::<usize>() = len58;
-                      *base.add(12).cast::<*mut u8>() = ptr58.cast_mut();
-                    }
-                  }
-                  let super::super::super::super::exports::notedown::core::types::TextRange {
-                    head_offset: head_offset59,
-                    tail_offset: tail_offset59,
-                  } = range55;
-                  *base.add(20).cast::<i32>() = _rt::as_i32(head_offset59);
-                  *base.add(24).cast::<i32>() = _rt::as_i32(tail_offset59);
-                }
-              }
-            }
-          }
-          *ptr1.add(4).cast::<usize>() = len60;
-          *ptr1.add(0).cast::<*mut u8>() = result60;
-          match path2 {
-            Some(e) => {
-              *ptr1.add(8).cast::<u8>() = (1i32) as u8;
-              *ptr1.add(12).cast::<i32>() = (e).take_handle() as i32;
-            }
-            None => {
-              *ptr1.add(8).cast::<u8>() = (0i32) as u8;
-            }
-          };
-          ptr1
-        }
 
-        #[doc(hidden)]
-        #[allow(non_snake_case)]
-        pub unsafe fn __post_return_hack_unused<T: Guest>(arg0: *mut u8) {
-          let l49 = *arg0.add(0).cast::<*mut u8>();
-          let l50 = *arg0.add(4).cast::<usize>();
-          let base51 = l49;
-          let len51 = l50;
-          for i in 0..len51 {
-            let base = base51.add(i * 40);
-            {
-              let l0 = i32::from(*base.add(0).cast::<u8>());
-              match l0 {
-                0 => {
-                  let l16 = *base.add(8).cast::<*mut u8>();
-                  let l17 = *base.add(12).cast::<usize>();
-                  let base18 = l16;
-                  let len18 = l17;
-                  for i in 0..len18 {
-                    let base = base18.add(i * 40);
-                    {
-                      let l1 = i32::from(*base.add(0).cast::<u8>());
-                      match l1 {
-                        0 => {
-                          let l2 = *base.add(4).cast::<*mut u8>();
-                          let l3 = *base.add(8).cast::<usize>();
-                          _rt::cabi_dealloc(l2, l3, 1);
-                        }
-                        1 => (),
-                        2 => {
-                          let l4 = i32::from(*base.add(8).cast::<u8>());
-                          match l4 {
-                            0 => {
-                              let l5 = *base.add(12).cast::<*mut u8>();
-                              let l6 = *base.add(16).cast::<usize>();
-                              _rt::cabi_dealloc(l5, l6, 1);
-                            }
-                            1 => {
-                              let l7 = *base.add(12).cast::<*mut u8>();
-                              let l8 = *base.add(16).cast::<usize>();
-                              _rt::cabi_dealloc(l7, l8, 1);
-                            }
-                            _ => {
-                              let l9 = *base.add(12).cast::<*mut u8>();
-                              let l10 = *base.add(16).cast::<usize>();
-                              _rt::cabi_dealloc(l9, l10, 1);
-                            }
-                          }
-                        }
-                        _ => {
-                          let l11 = i32::from(*base.add(4).cast::<u8>());
-                          match l11 {
-                            0 => (),
-                            _ => {
-                              let l12 = *base.add(8).cast::<*mut u8>();
-                              let l13 = *base.add(12).cast::<usize>();
-                              _rt::cabi_dealloc(l12, l13, 1);
-                            }
-                          }
-                          let l14 = *base.add(24).cast::<*mut u8>();
-                          let l15 = *base.add(28).cast::<usize>();
-                          _rt::cabi_dealloc(l14, l15, 1);
-                        }
-                      }
+                impl ::core::fmt::Debug for StyledText {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("StyledText").field("type", &self.type_).field("range", &self.range).finish()
                     }
-                  }
-                  _rt::cabi_dealloc(base18, len18 * 40, 4);
                 }
-                1 => (),
-                2 => {
-                  let l34 = *base.add(4).cast::<*mut u8>();
-                  let l35 = *base.add(8).cast::<usize>();
-                  let base36 = l34;
-                  let len36 = l35;
-                  for i in 0..len36 {
-                    let base = base36.add(i * 40);
-                    {
-                      let l19 = i32::from(*base.add(0).cast::<u8>());
-                      match l19 {
-                        0 => {
-                          let l20 = *base.add(4).cast::<*mut u8>();
-                          let l21 = *base.add(8).cast::<usize>();
-                          _rt::cabi_dealloc(l20, l21, 1);
-                        }
-                        1 => (),
-                        2 => {
-                          let l22 = i32::from(*base.add(8).cast::<u8>());
-                          match l22 {
-                            0 => {
-                              let l23 = *base.add(12).cast::<*mut u8>();
-                              let l24 = *base.add(16).cast::<usize>();
-                              _rt::cabi_dealloc(l23, l24, 1);
-                            }
-                            1 => {
-                              let l25 = *base.add(12).cast::<*mut u8>();
-                              let l26 = *base.add(16).cast::<usize>();
-                              _rt::cabi_dealloc(l25, l26, 1);
-                            }
-                            _ => {
-                              let l27 = *base.add(12).cast::<*mut u8>();
-                              let l28 = *base.add(16).cast::<usize>();
-                              _rt::cabi_dealloc(l27, l28, 1);
-                            }
-                          }
-                        }
-                        _ => {
-                          let l29 = i32::from(*base.add(4).cast::<u8>());
-                          match l29 {
-                            0 => (),
-                            _ => {
-                              let l30 = *base.add(8).cast::<*mut u8>();
-                              let l31 = *base.add(12).cast::<usize>();
-                              _rt::cabi_dealloc(l30, l31, 1);
-                            }
-                          }
-                          let l32 = *base.add(24).cast::<*mut u8>();
-                          let l33 = *base.add(28).cast::<usize>();
-                          _rt::cabi_dealloc(l32, l33, 1);
-                        }
-                      }
-                    }
-                  }
-                  _rt::cabi_dealloc(base36, len36 * 40, 4);
-                }
-                3 => (),
-                4 => {
-                  let l37 = i32::from(*base.add(4).cast::<u8>());
-                  match l37 {
-                    0 => (),
-                    _ => {
-                      let l38 = *base.add(8).cast::<*mut u8>();
-                      let l39 = *base.add(12).cast::<usize>();
-                      _rt::cabi_dealloc(l38, l39, 1);
-                    }
-                  }
-                  let l40 = *base.add(24).cast::<*mut u8>();
-                  let l41 = *base.add(28).cast::<usize>();
-                  _rt::cabi_dealloc(l40, l41, 1);
-                }
-                _ => {
-                  let l42 = i32::from(*base.add(8).cast::<u8>());
-                  match l42 {
-                    0 => {
-                      let l43 = *base.add(12).cast::<*mut u8>();
-                      let l44 = *base.add(16).cast::<usize>();
-                      _rt::cabi_dealloc(l43, l44, 1);
-                    }
-                    1 => {
-                      let l45 = *base.add(12).cast::<*mut u8>();
-                      let l46 = *base.add(16).cast::<usize>();
-                      _rt::cabi_dealloc(l45, l46, 1);
-                    }
-                    _ => {
-                      let l47 = *base.add(12).cast::<*mut u8>();
-                      let l48 = *base.add(16).cast::<usize>();
-                      _rt::cabi_dealloc(l47, l48, 1);
-                    }
-                  }
-                }
-              }
-            }
-          }
-          _rt::cabi_dealloc(base51, len51 * 40, 4);
-        }
 
-        pub trait Guest {
-          fn hack_unused() -> NotedownRoot;
-        }
-        #[doc(hidden)]
+                /// \image(url, text)
+                #[derive(Clone)]
+                pub struct ImageReference {
+                    pub url: Option<_rt::String>,
+                    pub range: TextRange,
+                }
 
-        macro_rules! __export_notedown_core_syntax_tree_0_1_0_cabi {
+                impl ::core::fmt::Debug for ImageReference {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("ImageReference").field("url", &self.url).field("range", &self.range).finish()
+                    }
+                }
+
+                #[derive(Clone)]
+                pub enum ParagraphItem {
+                    Text(NormalText),
+                    Style(StyledText),
+                    Math(MathEnvironment),
+                    Code(CodeEnvironment),
+                    Image(ImageReference),
+                }
+
+                impl ::core::fmt::Debug for ParagraphItem {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        match self {
+                            ParagraphItem::Text(e) => f.debug_tuple("ParagraphItem::Text").field(e).finish(),
+                            ParagraphItem::Style(e) => f.debug_tuple("ParagraphItem::Style").field(e).finish(),
+                            ParagraphItem::Math(e) => f.debug_tuple("ParagraphItem::Math").field(e).finish(),
+                            ParagraphItem::Code(e) => f.debug_tuple("ParagraphItem::Code").field(e).finish(),
+                            ParagraphItem::Image(e) => f.debug_tuple("ParagraphItem::Image").field(e).finish(),
+                        }
+                    }
+                }
+
+                /// === paragraph environment ===
+                /// -----------------------------------------------------------------------------
+                #[derive(Clone)]
+                pub struct ParagraphBlock {
+                    pub terms: _rt::Vec<ParagraphItem>,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for ParagraphBlock {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("ParagraphBlock").field("terms", &self.terms).field("range", &self.range).finish()
+                    }
+                }
+
+                /// === title block ===
+                /// -----------------------------------------------------------------------------
+                #[derive(Clone)]
+                pub struct HeadingBlock {
+                    pub level: u32,
+                    pub title: ParagraphBlock,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for HeadingBlock {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("HeadingBlock")
+                            .field("level", &self.level)
+                            .field("title", &self.title)
+                            .field("range", &self.range)
+                            .finish()
+                    }
+                }
+
+                #[derive(Clone)]
+                pub enum RootItem {
+                    Heading(HeadingBlock),
+                    HorizontalRule(HorizontalRule),
+                    Paragraph(ParagraphBlock),
+                    SpaceBreak(BreaklineBlock),
+                    Code(CodeEnvironment),
+                    Math(MathEnvironment),
+                    List(ListEnvironment),
+                    Table(TableEnvironment),
+                }
+
+                impl ::core::fmt::Debug for RootItem {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        match self {
+                            RootItem::Heading(e) => f.debug_tuple("RootItem::Heading").field(e).finish(),
+                            RootItem::HorizontalRule(e) => f.debug_tuple("RootItem::HorizontalRule").field(e).finish(),
+                            RootItem::Paragraph(e) => f.debug_tuple("RootItem::Paragraph").field(e).finish(),
+                            RootItem::SpaceBreak(e) => f.debug_tuple("RootItem::SpaceBreak").field(e).finish(),
+                            RootItem::Code(e) => f.debug_tuple("RootItem::Code").field(e).finish(),
+                            RootItem::Math(e) => f.debug_tuple("RootItem::Math").field(e).finish(),
+                            RootItem::List(e) => f.debug_tuple("RootItem::List").field(e).finish(),
+                            RootItem::Table(e) => f.debug_tuple("RootItem::Table").field(e).finish(),
+                        }
+                    }
+                }
+
+                pub struct NotedownRoot {
+                    pub blocks: _rt::Vec<RootItem>,
+                    pub path: Option<Url>,
+                }
+
+                impl ::core::fmt::Debug for NotedownRoot {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("NotedownRoot").field("blocks", &self.blocks).field("path", &self.path).finish()
+                    }
+                }
+
+                #[doc(hidden)]
+                #[allow(non_snake_case)]
+                pub unsafe fn _export_hack_unused_cabi<T: Guest>() -> *mut u8 {
+                    #[cfg(target_arch = "wasm32")]
+                    _rt::run_ctors_once();
+                    let result0 = T::hack_unused();
+                    let ptr1 = _RET_AREA.0.as_mut_ptr().cast::<u8>();
+                    let NotedownRoot { blocks: blocks2, path: path2 } = result0;
+                    let vec77 = blocks2;
+                    let len77 = vec77.len();
+                    let layout77 = _rt::alloc::Layout::from_size_align_unchecked(vec77.len() * 40, 4);
+                    let result77 = if layout77.size() != 0 {
+                        let ptr = _rt::alloc::alloc(layout77).cast::<u8>();
+                        if ptr.is_null() {
+                            _rt::alloc::handle_alloc_error(layout77);
+                        }
+                        ptr
+                    } else {
+                        { ::core::ptr::null_mut() }
+                    };
+                    for (i, e) in vec77.into_iter().enumerate() {
+                        let base = result77.add(i * 40);
+                        {
+                            match e {
+                                RootItem::Heading(e) => {
+                                    *base.add(0).cast::<u8>() = (0i32) as u8;
+                                    let HeadingBlock { level: level3, title: title3, range: range3 } = e;
+                                    *base.add(4).cast::<i32>() = _rt::as_i32(level3);
+                                    let ParagraphBlock { terms: terms4, range: range4 } = title3;
+                                    let vec25 = terms4;
+                                    let len25 = vec25.len();
+                                    let layout25 = _rt::alloc::Layout::from_size_align_unchecked(vec25.len() * 40, 4);
+                                    let result25 = if layout25.size() != 0 {
+                                        let ptr = _rt::alloc::alloc(layout25).cast::<u8>();
+                                        if ptr.is_null() {
+                                            _rt::alloc::handle_alloc_error(layout25);
+                                        }
+                                        ptr
+                                    } else {
+                                        { ::core::ptr::null_mut() }
+                                    };
+                                    for (i, e) in vec25.into_iter().enumerate() {
+                                        let base = result25.add(i * 40);
+                                        {
+                                            match e {
+                                                ParagraphItem::Text(e) => {
+                                                    *base.add(0).cast::<u8>() = (0i32) as u8;
+                                                    let NormalText { text: text5, range: range5 } = e;
+                                                    let vec6 = (text5.into_bytes()).into_boxed_slice();
+                                                    let ptr6 = vec6.as_ptr().cast::<u8>();
+                                                    let len6 = vec6.len();
+                                                    ::core::mem::forget(vec6);
+                                                    *base.add(8).cast::<usize>() = len6;
+                                                    *base.add(4).cast::<*mut u8>() = ptr6.cast_mut();
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset7,
+                                                        tail_offset: tail_offset7,
+                                                    } = range5;
+                                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset7);
+                                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset7);
+                                                }
+                                                ParagraphItem::Style(e) => {
+                                                    *base.add(0).cast::<u8>() = (1i32) as u8;
+                                                    let StyledText { type_: type_8, range: range8 } = e;
+                                                    let flags9 = type_8;
+                                                    *base.add(4).cast::<u8>() = ((flags9.bits() >> 0) as i32) as u8;
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset10,
+                                                        tail_offset: tail_offset10,
+                                                    } = range8;
+                                                    *base.add(8).cast::<i32>() = _rt::as_i32(head_offset10);
+                                                    *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset10);
+                                                }
+                                                ParagraphItem::Math(e) => {
+                                                    *base.add(0).cast::<u8>() = (2i32) as u8;
+                                                    let MathEnvironment { display: display11, content: content11, range: range11 } = e;
+                                                    match display11 {
+                                                        MathDisplay::Inline => {
+                                                            *base.add(4).cast::<u8>() = (0i32) as u8;
+                                                        }
+                                                        MathDisplay::Block => {
+                                                            *base.add(4).cast::<u8>() = (1i32) as u8;
+                                                        }
+                                                    }
+                                                    match content11 {
+                                                        MathContent::Mathml(e) => {
+                                                            *base.add(8).cast::<u8>() = (0i32) as u8;
+                                                            let vec12 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr12 = vec12.as_ptr().cast::<u8>();
+                                                            let len12 = vec12.len();
+                                                            ::core::mem::forget(vec12);
+                                                            *base.add(16).cast::<usize>() = len12;
+                                                            *base.add(12).cast::<*mut u8>() = ptr12.cast_mut();
+                                                        }
+                                                        MathContent::Tex(e) => {
+                                                            *base.add(8).cast::<u8>() = (1i32) as u8;
+                                                            let vec13 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr13 = vec13.as_ptr().cast::<u8>();
+                                                            let len13 = vec13.len();
+                                                            ::core::mem::forget(vec13);
+                                                            *base.add(16).cast::<usize>() = len13;
+                                                            *base.add(12).cast::<*mut u8>() = ptr13.cast_mut();
+                                                        }
+                                                        MathContent::Asciimath(e) => {
+                                                            *base.add(8).cast::<u8>() = (2i32) as u8;
+                                                            let vec14 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr14 = vec14.as_ptr().cast::<u8>();
+                                                            let len14 = vec14.len();
+                                                            ::core::mem::forget(vec14);
+                                                            *base.add(16).cast::<usize>() = len14;
+                                                            *base.add(12).cast::<*mut u8>() = ptr14.cast_mut();
+                                                        }
+                                                    }
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset15,
+                                                        tail_offset: tail_offset15,
+                                                    } = range11;
+                                                    *base.add(20).cast::<i32>() = _rt::as_i32(head_offset15);
+                                                    *base.add(24).cast::<i32>() = _rt::as_i32(tail_offset15);
+                                                }
+                                                ParagraphItem::Code(e) => {
+                                                    *base.add(0).cast::<u8>() = (3i32) as u8;
+                                                    let CodeEnvironment { action: action16, lines: lines16, range: range16 } = e;
+                                                    match action16 {
+                                                        CodeAction::Anonymous => {
+                                                            *base.add(4).cast::<u8>() = (0i32) as u8;
+                                                        }
+                                                        CodeAction::Highlight(e) => {
+                                                            *base.add(4).cast::<u8>() = (1i32) as u8;
+                                                            let CodeHighlight { language: language17, range: range17 } = e;
+                                                            let vec18 = (language17.into_bytes()).into_boxed_slice();
+                                                            let ptr18 = vec18.as_ptr().cast::<u8>();
+                                                            let len18 = vec18.len();
+                                                            ::core::mem::forget(vec18);
+                                                            *base.add(12).cast::<usize>() = len18;
+                                                            *base.add(8).cast::<*mut u8>() = ptr18.cast_mut();
+                                                            let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                                head_offset: head_offset19,
+                                                                tail_offset: tail_offset19,
+                                                            } = range17;
+                                                            *base.add(16).cast::<i32>() = _rt::as_i32(head_offset19);
+                                                            *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset19);
+                                                        }
+                                                    }
+                                                    let vec20 = (lines16.into_bytes()).into_boxed_slice();
+                                                    let ptr20 = vec20.as_ptr().cast::<u8>();
+                                                    let len20 = vec20.len();
+                                                    ::core::mem::forget(vec20);
+                                                    *base.add(28).cast::<usize>() = len20;
+                                                    *base.add(24).cast::<*mut u8>() = ptr20.cast_mut();
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset21,
+                                                        tail_offset: tail_offset21,
+                                                    } = range16;
+                                                    *base.add(32).cast::<i32>() = _rt::as_i32(head_offset21);
+                                                    *base.add(36).cast::<i32>() = _rt::as_i32(tail_offset21);
+                                                }
+                                                ParagraphItem::Image(e) => {
+                                                    *base.add(0).cast::<u8>() = (4i32) as u8;
+                                                    let ImageReference { url: url22, range: range22 } = e;
+                                                    match url22 {
+                                                        Some(e) => {
+                                                            *base.add(4).cast::<u8>() = (1i32) as u8;
+                                                            let vec23 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr23 = vec23.as_ptr().cast::<u8>();
+                                                            let len23 = vec23.len();
+                                                            ::core::mem::forget(vec23);
+                                                            *base.add(12).cast::<usize>() = len23;
+                                                            *base.add(8).cast::<*mut u8>() = ptr23.cast_mut();
+                                                        }
+                                                        None => {
+                                                            *base.add(4).cast::<u8>() = (0i32) as u8;
+                                                        }
+                                                    };
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset24,
+                                                        tail_offset: tail_offset24,
+                                                    } = range22;
+                                                    *base.add(16).cast::<i32>() = _rt::as_i32(head_offset24);
+                                                    *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset24);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    *base.add(12).cast::<usize>() = len25;
+                                    *base.add(8).cast::<*mut u8>() = result25;
+                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                        head_offset: head_offset26,
+                                        tail_offset: tail_offset26,
+                                    } = range4;
+                                    *base.add(16).cast::<i32>() = _rt::as_i32(head_offset26);
+                                    *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset26);
+                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                        head_offset: head_offset27,
+                                        tail_offset: tail_offset27,
+                                    } = range3;
+                                    *base.add(24).cast::<i32>() = _rt::as_i32(head_offset27);
+                                    *base.add(28).cast::<i32>() = _rt::as_i32(tail_offset27);
+                                }
+                                RootItem::HorizontalRule(e) => {
+                                    *base.add(0).cast::<u8>() = (1i32) as u8;
+                                    let HorizontalRule { lines: lines28, range: range28 } = e;
+                                    *base.add(4).cast::<i32>() = _rt::as_i32(lines28);
+                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                        head_offset: head_offset29,
+                                        tail_offset: tail_offset29,
+                                    } = range28;
+                                    *base.add(8).cast::<i32>() = _rt::as_i32(head_offset29);
+                                    *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset29);
+                                }
+                                RootItem::Paragraph(e) => {
+                                    *base.add(0).cast::<u8>() = (2i32) as u8;
+                                    let ParagraphBlock { terms: terms30, range: range30 } = e;
+                                    let vec51 = terms30;
+                                    let len51 = vec51.len();
+                                    let layout51 = _rt::alloc::Layout::from_size_align_unchecked(vec51.len() * 40, 4);
+                                    let result51 = if layout51.size() != 0 {
+                                        let ptr = _rt::alloc::alloc(layout51).cast::<u8>();
+                                        if ptr.is_null() {
+                                            _rt::alloc::handle_alloc_error(layout51);
+                                        }
+                                        ptr
+                                    } else {
+                                        { ::core::ptr::null_mut() }
+                                    };
+                                    for (i, e) in vec51.into_iter().enumerate() {
+                                        let base = result51.add(i * 40);
+                                        {
+                                            match e {
+                                                ParagraphItem::Text(e) => {
+                                                    *base.add(0).cast::<u8>() = (0i32) as u8;
+                                                    let NormalText { text: text31, range: range31 } = e;
+                                                    let vec32 = (text31.into_bytes()).into_boxed_slice();
+                                                    let ptr32 = vec32.as_ptr().cast::<u8>();
+                                                    let len32 = vec32.len();
+                                                    ::core::mem::forget(vec32);
+                                                    *base.add(8).cast::<usize>() = len32;
+                                                    *base.add(4).cast::<*mut u8>() = ptr32.cast_mut();
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset33,
+                                                        tail_offset: tail_offset33,
+                                                    } = range31;
+                                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset33);
+                                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset33);
+                                                }
+                                                ParagraphItem::Style(e) => {
+                                                    *base.add(0).cast::<u8>() = (1i32) as u8;
+                                                    let StyledText { type_: type_34, range: range34 } = e;
+                                                    let flags35 = type_34;
+                                                    *base.add(4).cast::<u8>() = ((flags35.bits() >> 0) as i32) as u8;
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset36,
+                                                        tail_offset: tail_offset36,
+                                                    } = range34;
+                                                    *base.add(8).cast::<i32>() = _rt::as_i32(head_offset36);
+                                                    *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset36);
+                                                }
+                                                ParagraphItem::Math(e) => {
+                                                    *base.add(0).cast::<u8>() = (2i32) as u8;
+                                                    let MathEnvironment { display: display37, content: content37, range: range37 } = e;
+                                                    match display37 {
+                                                        MathDisplay::Inline => {
+                                                            *base.add(4).cast::<u8>() = (0i32) as u8;
+                                                        }
+                                                        MathDisplay::Block => {
+                                                            *base.add(4).cast::<u8>() = (1i32) as u8;
+                                                        }
+                                                    }
+                                                    match content37 {
+                                                        MathContent::Mathml(e) => {
+                                                            *base.add(8).cast::<u8>() = (0i32) as u8;
+                                                            let vec38 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr38 = vec38.as_ptr().cast::<u8>();
+                                                            let len38 = vec38.len();
+                                                            ::core::mem::forget(vec38);
+                                                            *base.add(16).cast::<usize>() = len38;
+                                                            *base.add(12).cast::<*mut u8>() = ptr38.cast_mut();
+                                                        }
+                                                        MathContent::Tex(e) => {
+                                                            *base.add(8).cast::<u8>() = (1i32) as u8;
+                                                            let vec39 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr39 = vec39.as_ptr().cast::<u8>();
+                                                            let len39 = vec39.len();
+                                                            ::core::mem::forget(vec39);
+                                                            *base.add(16).cast::<usize>() = len39;
+                                                            *base.add(12).cast::<*mut u8>() = ptr39.cast_mut();
+                                                        }
+                                                        MathContent::Asciimath(e) => {
+                                                            *base.add(8).cast::<u8>() = (2i32) as u8;
+                                                            let vec40 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr40 = vec40.as_ptr().cast::<u8>();
+                                                            let len40 = vec40.len();
+                                                            ::core::mem::forget(vec40);
+                                                            *base.add(16).cast::<usize>() = len40;
+                                                            *base.add(12).cast::<*mut u8>() = ptr40.cast_mut();
+                                                        }
+                                                    }
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset41,
+                                                        tail_offset: tail_offset41,
+                                                    } = range37;
+                                                    *base.add(20).cast::<i32>() = _rt::as_i32(head_offset41);
+                                                    *base.add(24).cast::<i32>() = _rt::as_i32(tail_offset41);
+                                                }
+                                                ParagraphItem::Code(e) => {
+                                                    *base.add(0).cast::<u8>() = (3i32) as u8;
+                                                    let CodeEnvironment { action: action42, lines: lines42, range: range42 } = e;
+                                                    match action42 {
+                                                        CodeAction::Anonymous => {
+                                                            *base.add(4).cast::<u8>() = (0i32) as u8;
+                                                        }
+                                                        CodeAction::Highlight(e) => {
+                                                            *base.add(4).cast::<u8>() = (1i32) as u8;
+                                                            let CodeHighlight { language: language43, range: range43 } = e;
+                                                            let vec44 = (language43.into_bytes()).into_boxed_slice();
+                                                            let ptr44 = vec44.as_ptr().cast::<u8>();
+                                                            let len44 = vec44.len();
+                                                            ::core::mem::forget(vec44);
+                                                            *base.add(12).cast::<usize>() = len44;
+                                                            *base.add(8).cast::<*mut u8>() = ptr44.cast_mut();
+                                                            let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                                head_offset: head_offset45,
+                                                                tail_offset: tail_offset45,
+                                                            } = range43;
+                                                            *base.add(16).cast::<i32>() = _rt::as_i32(head_offset45);
+                                                            *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset45);
+                                                        }
+                                                    }
+                                                    let vec46 = (lines42.into_bytes()).into_boxed_slice();
+                                                    let ptr46 = vec46.as_ptr().cast::<u8>();
+                                                    let len46 = vec46.len();
+                                                    ::core::mem::forget(vec46);
+                                                    *base.add(28).cast::<usize>() = len46;
+                                                    *base.add(24).cast::<*mut u8>() = ptr46.cast_mut();
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset47,
+                                                        tail_offset: tail_offset47,
+                                                    } = range42;
+                                                    *base.add(32).cast::<i32>() = _rt::as_i32(head_offset47);
+                                                    *base.add(36).cast::<i32>() = _rt::as_i32(tail_offset47);
+                                                }
+                                                ParagraphItem::Image(e) => {
+                                                    *base.add(0).cast::<u8>() = (4i32) as u8;
+                                                    let ImageReference { url: url48, range: range48 } = e;
+                                                    match url48 {
+                                                        Some(e) => {
+                                                            *base.add(4).cast::<u8>() = (1i32) as u8;
+                                                            let vec49 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr49 = vec49.as_ptr().cast::<u8>();
+                                                            let len49 = vec49.len();
+                                                            ::core::mem::forget(vec49);
+                                                            *base.add(12).cast::<usize>() = len49;
+                                                            *base.add(8).cast::<*mut u8>() = ptr49.cast_mut();
+                                                        }
+                                                        None => {
+                                                            *base.add(4).cast::<u8>() = (0i32) as u8;
+                                                        }
+                                                    };
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset50,
+                                                        tail_offset: tail_offset50,
+                                                    } = range48;
+                                                    *base.add(16).cast::<i32>() = _rt::as_i32(head_offset50);
+                                                    *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset50);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    *base.add(8).cast::<usize>() = len51;
+                                    *base.add(4).cast::<*mut u8>() = result51;
+                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                        head_offset: head_offset52,
+                                        tail_offset: tail_offset52,
+                                    } = range30;
+                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset52);
+                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset52);
+                                }
+                                RootItem::SpaceBreak(e) => {
+                                    *base.add(0).cast::<u8>() = (3i32) as u8;
+                                    let BreaklineBlock { lines: lines53, range: range53 } = e;
+                                    *base.add(4).cast::<i32>() = _rt::as_i32(lines53);
+                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                        head_offset: head_offset54,
+                                        tail_offset: tail_offset54,
+                                    } = range53;
+                                    *base.add(8).cast::<i32>() = _rt::as_i32(head_offset54);
+                                    *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset54);
+                                }
+                                RootItem::Code(e) => {
+                                    *base.add(0).cast::<u8>() = (4i32) as u8;
+                                    let CodeEnvironment { action: action55, lines: lines55, range: range55 } = e;
+                                    match action55 {
+                                        CodeAction::Anonymous => {
+                                            *base.add(4).cast::<u8>() = (0i32) as u8;
+                                        }
+                                        CodeAction::Highlight(e) => {
+                                            *base.add(4).cast::<u8>() = (1i32) as u8;
+                                            let CodeHighlight { language: language56, range: range56 } = e;
+                                            let vec57 = (language56.into_bytes()).into_boxed_slice();
+                                            let ptr57 = vec57.as_ptr().cast::<u8>();
+                                            let len57 = vec57.len();
+                                            ::core::mem::forget(vec57);
+                                            *base.add(12).cast::<usize>() = len57;
+                                            *base.add(8).cast::<*mut u8>() = ptr57.cast_mut();
+                                            let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                head_offset: head_offset58,
+                                                tail_offset: tail_offset58,
+                                            } = range56;
+                                            *base.add(16).cast::<i32>() = _rt::as_i32(head_offset58);
+                                            *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset58);
+                                        }
+                                    }
+                                    let vec59 = (lines55.into_bytes()).into_boxed_slice();
+                                    let ptr59 = vec59.as_ptr().cast::<u8>();
+                                    let len59 = vec59.len();
+                                    ::core::mem::forget(vec59);
+                                    *base.add(28).cast::<usize>() = len59;
+                                    *base.add(24).cast::<*mut u8>() = ptr59.cast_mut();
+                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                        head_offset: head_offset60,
+                                        tail_offset: tail_offset60,
+                                    } = range55;
+                                    *base.add(32).cast::<i32>() = _rt::as_i32(head_offset60);
+                                    *base.add(36).cast::<i32>() = _rt::as_i32(tail_offset60);
+                                }
+                                RootItem::Math(e) => {
+                                    *base.add(0).cast::<u8>() = (5i32) as u8;
+                                    let MathEnvironment { display: display61, content: content61, range: range61 } = e;
+                                    match display61 {
+                                        MathDisplay::Inline => {
+                                            *base.add(4).cast::<u8>() = (0i32) as u8;
+                                        }
+                                        MathDisplay::Block => {
+                                            *base.add(4).cast::<u8>() = (1i32) as u8;
+                                        }
+                                    }
+                                    match content61 {
+                                        MathContent::Mathml(e) => {
+                                            *base.add(8).cast::<u8>() = (0i32) as u8;
+                                            let vec62 = (e.into_bytes()).into_boxed_slice();
+                                            let ptr62 = vec62.as_ptr().cast::<u8>();
+                                            let len62 = vec62.len();
+                                            ::core::mem::forget(vec62);
+                                            *base.add(16).cast::<usize>() = len62;
+                                            *base.add(12).cast::<*mut u8>() = ptr62.cast_mut();
+                                        }
+                                        MathContent::Tex(e) => {
+                                            *base.add(8).cast::<u8>() = (1i32) as u8;
+                                            let vec63 = (e.into_bytes()).into_boxed_slice();
+                                            let ptr63 = vec63.as_ptr().cast::<u8>();
+                                            let len63 = vec63.len();
+                                            ::core::mem::forget(vec63);
+                                            *base.add(16).cast::<usize>() = len63;
+                                            *base.add(12).cast::<*mut u8>() = ptr63.cast_mut();
+                                        }
+                                        MathContent::Asciimath(e) => {
+                                            *base.add(8).cast::<u8>() = (2i32) as u8;
+                                            let vec64 = (e.into_bytes()).into_boxed_slice();
+                                            let ptr64 = vec64.as_ptr().cast::<u8>();
+                                            let len64 = vec64.len();
+                                            ::core::mem::forget(vec64);
+                                            *base.add(16).cast::<usize>() = len64;
+                                            *base.add(12).cast::<*mut u8>() = ptr64.cast_mut();
+                                        }
+                                    }
+                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                        head_offset: head_offset65,
+                                        tail_offset: tail_offset65,
+                                    } = range61;
+                                    *base.add(20).cast::<i32>() = _rt::as_i32(head_offset65);
+                                    *base.add(24).cast::<i32>() = _rt::as_i32(tail_offset65);
+                                }
+                                RootItem::List(e) => {
+                                    *base.add(0).cast::<u8>() = (6i32) as u8;
+                                    let ListEnvironment { items: items66, range: range66 } = e;
+                                    let vec69 = items66;
+                                    let len69 = vec69.len();
+                                    let layout69 = _rt::alloc::Layout::from_size_align_unchecked(vec69.len() * 16, 4);
+                                    let result69 = if layout69.size() != 0 {
+                                        let ptr = _rt::alloc::alloc(layout69).cast::<u8>();
+                                        if ptr.is_null() {
+                                            _rt::alloc::handle_alloc_error(layout69);
+                                        }
+                                        ptr
+                                    } else {
+                                        { ::core::ptr::null_mut() }
+                                    };
+                                    for (i, e) in vec69.into_iter().enumerate() {
+                                        let base = result69.add(i * 16);
+                                        {
+                                            let ListItem { level: level67, checked: checked67, range: range67 } = e;
+                                            *base.add(0).cast::<i32>() = _rt::as_i32(level67);
+                                            match checked67 {
+                                                Some(e) => {
+                                                    *base.add(4).cast::<u8>() = (1i32) as u8;
+                                                    *base.add(5).cast::<u8>() = (match e {
+                                                        true => 1,
+                                                        false => 0,
+                                                    }) as u8;
+                                                }
+                                                None => {
+                                                    *base.add(4).cast::<u8>() = (0i32) as u8;
+                                                }
+                                            };
+                                            let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                head_offset: head_offset68,
+                                                tail_offset: tail_offset68,
+                                            } = range67;
+                                            *base.add(8).cast::<i32>() = _rt::as_i32(head_offset68);
+                                            *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset68);
+                                        }
+                                    }
+                                    *base.add(8).cast::<usize>() = len69;
+                                    *base.add(4).cast::<*mut u8>() = result69;
+                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                        head_offset: head_offset70,
+                                        tail_offset: tail_offset70,
+                                    } = range66;
+                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset70);
+                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset70);
+                                }
+                                RootItem::Table(e) => {
+                                    *base.add(0).cast::<u8>() = (7i32) as u8;
+                                    let TableEnvironment { rows: rows71, range: range71 } = e;
+                                    let vec75 = rows71;
+                                    let len75 = vec75.len();
+                                    let layout75 = _rt::alloc::Layout::from_size_align_unchecked(vec75.len() * 16, 4);
+                                    let result75 = if layout75.size() != 0 {
+                                        let ptr = _rt::alloc::alloc(layout75).cast::<u8>();
+                                        if ptr.is_null() {
+                                            _rt::alloc::handle_alloc_error(layout75);
+                                        }
+                                        ptr
+                                    } else {
+                                        { ::core::ptr::null_mut() }
+                                    };
+                                    for (i, e) in vec75.into_iter().enumerate() {
+                                        let base = result75.add(i * 16);
+                                        {
+                                            let TableRow { cells: cells72, range: range72 } = e;
+                                            let vec73 = (cells72).into_boxed_slice();
+                                            let ptr73 = vec73.as_ptr().cast::<u8>();
+                                            let len73 = vec73.len();
+                                            ::core::mem::forget(vec73);
+                                            *base.add(4).cast::<usize>() = len73;
+                                            *base.add(0).cast::<*mut u8>() = ptr73.cast_mut();
+                                            let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                head_offset: head_offset74,
+                                                tail_offset: tail_offset74,
+                                            } = range72;
+                                            *base.add(8).cast::<i32>() = _rt::as_i32(head_offset74);
+                                            *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset74);
+                                        }
+                                    }
+                                    *base.add(8).cast::<usize>() = len75;
+                                    *base.add(4).cast::<*mut u8>() = result75;
+                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                        head_offset: head_offset76,
+                                        tail_offset: tail_offset76,
+                                    } = range71;
+                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset76);
+                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset76);
+                                }
+                            }
+                        }
+                    }
+                    *ptr1.add(4).cast::<usize>() = len77;
+                    *ptr1.add(0).cast::<*mut u8>() = result77;
+                    match path2 {
+                        Some(e) => {
+                            *ptr1.add(8).cast::<u8>() = (1i32) as u8;
+                            *ptr1.add(12).cast::<i32>() = (e).take_handle() as i32;
+                        }
+                        None => {
+                            *ptr1.add(8).cast::<u8>() = (0i32) as u8;
+                        }
+                    };
+                    ptr1
+                }
+
+                #[doc(hidden)]
+                #[allow(non_snake_case)]
+                pub unsafe fn __post_return_hack_unused<T: Guest>(arg0: *mut u8) {
+                    let l64 = *arg0.add(0).cast::<*mut u8>();
+                    let l65 = *arg0.add(4).cast::<usize>();
+                    let base66 = l64;
+                    let len66 = l65;
+                    for i in 0..len66 {
+                        let base = base66.add(i * 40);
+                        {
+                            let l0 = i32::from(*base.add(0).cast::<u8>());
+                            match l0 {
+                                0 => {
+                                    let l19 = *base.add(8).cast::<*mut u8>();
+                                    let l20 = *base.add(12).cast::<usize>();
+                                    let base21 = l19;
+                                    let len21 = l20;
+                                    for i in 0..len21 {
+                                        let base = base21.add(i * 40);
+                                        {
+                                            let l1 = i32::from(*base.add(0).cast::<u8>());
+                                            match l1 {
+                                                0 => {
+                                                    let l2 = *base.add(4).cast::<*mut u8>();
+                                                    let l3 = *base.add(8).cast::<usize>();
+                                                    _rt::cabi_dealloc(l2, l3, 1);
+                                                }
+                                                1 => (),
+                                                2 => {
+                                                    let l4 = i32::from(*base.add(8).cast::<u8>());
+                                                    match l4 {
+                                                        0 => {
+                                                            let l5 = *base.add(12).cast::<*mut u8>();
+                                                            let l6 = *base.add(16).cast::<usize>();
+                                                            _rt::cabi_dealloc(l5, l6, 1);
+                                                        }
+                                                        1 => {
+                                                            let l7 = *base.add(12).cast::<*mut u8>();
+                                                            let l8 = *base.add(16).cast::<usize>();
+                                                            _rt::cabi_dealloc(l7, l8, 1);
+                                                        }
+                                                        _ => {
+                                                            let l9 = *base.add(12).cast::<*mut u8>();
+                                                            let l10 = *base.add(16).cast::<usize>();
+                                                            _rt::cabi_dealloc(l9, l10, 1);
+                                                        }
+                                                    }
+                                                }
+                                                3 => {
+                                                    let l11 = i32::from(*base.add(4).cast::<u8>());
+                                                    match l11 {
+                                                        0 => (),
+                                                        _ => {
+                                                            let l12 = *base.add(8).cast::<*mut u8>();
+                                                            let l13 = *base.add(12).cast::<usize>();
+                                                            _rt::cabi_dealloc(l12, l13, 1);
+                                                        }
+                                                    }
+                                                    let l14 = *base.add(24).cast::<*mut u8>();
+                                                    let l15 = *base.add(28).cast::<usize>();
+                                                    _rt::cabi_dealloc(l14, l15, 1);
+                                                }
+                                                _ => {
+                                                    let l16 = i32::from(*base.add(4).cast::<u8>());
+                                                    match l16 {
+                                                        0 => (),
+                                                        _ => {
+                                                            let l17 = *base.add(8).cast::<*mut u8>();
+                                                            let l18 = *base.add(12).cast::<usize>();
+                                                            _rt::cabi_dealloc(l17, l18, 1);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    _rt::cabi_dealloc(base21, len21 * 40, 4);
+                                }
+                                1 => (),
+                                2 => {
+                                    let l40 = *base.add(4).cast::<*mut u8>();
+                                    let l41 = *base.add(8).cast::<usize>();
+                                    let base42 = l40;
+                                    let len42 = l41;
+                                    for i in 0..len42 {
+                                        let base = base42.add(i * 40);
+                                        {
+                                            let l22 = i32::from(*base.add(0).cast::<u8>());
+                                            match l22 {
+                                                0 => {
+                                                    let l23 = *base.add(4).cast::<*mut u8>();
+                                                    let l24 = *base.add(8).cast::<usize>();
+                                                    _rt::cabi_dealloc(l23, l24, 1);
+                                                }
+                                                1 => (),
+                                                2 => {
+                                                    let l25 = i32::from(*base.add(8).cast::<u8>());
+                                                    match l25 {
+                                                        0 => {
+                                                            let l26 = *base.add(12).cast::<*mut u8>();
+                                                            let l27 = *base.add(16).cast::<usize>();
+                                                            _rt::cabi_dealloc(l26, l27, 1);
+                                                        }
+                                                        1 => {
+                                                            let l28 = *base.add(12).cast::<*mut u8>();
+                                                            let l29 = *base.add(16).cast::<usize>();
+                                                            _rt::cabi_dealloc(l28, l29, 1);
+                                                        }
+                                                        _ => {
+                                                            let l30 = *base.add(12).cast::<*mut u8>();
+                                                            let l31 = *base.add(16).cast::<usize>();
+                                                            _rt::cabi_dealloc(l30, l31, 1);
+                                                        }
+                                                    }
+                                                }
+                                                3 => {
+                                                    let l32 = i32::from(*base.add(4).cast::<u8>());
+                                                    match l32 {
+                                                        0 => (),
+                                                        _ => {
+                                                            let l33 = *base.add(8).cast::<*mut u8>();
+                                                            let l34 = *base.add(12).cast::<usize>();
+                                                            _rt::cabi_dealloc(l33, l34, 1);
+                                                        }
+                                                    }
+                                                    let l35 = *base.add(24).cast::<*mut u8>();
+                                                    let l36 = *base.add(28).cast::<usize>();
+                                                    _rt::cabi_dealloc(l35, l36, 1);
+                                                }
+                                                _ => {
+                                                    let l37 = i32::from(*base.add(4).cast::<u8>());
+                                                    match l37 {
+                                                        0 => (),
+                                                        _ => {
+                                                            let l38 = *base.add(8).cast::<*mut u8>();
+                                                            let l39 = *base.add(12).cast::<usize>();
+                                                            _rt::cabi_dealloc(l38, l39, 1);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    _rt::cabi_dealloc(base42, len42 * 40, 4);
+                                }
+                                3 => (),
+                                4 => {
+                                    let l43 = i32::from(*base.add(4).cast::<u8>());
+                                    match l43 {
+                                        0 => (),
+                                        _ => {
+                                            let l44 = *base.add(8).cast::<*mut u8>();
+                                            let l45 = *base.add(12).cast::<usize>();
+                                            _rt::cabi_dealloc(l44, l45, 1);
+                                        }
+                                    }
+                                    let l46 = *base.add(24).cast::<*mut u8>();
+                                    let l47 = *base.add(28).cast::<usize>();
+                                    _rt::cabi_dealloc(l46, l47, 1);
+                                }
+                                5 => {
+                                    let l48 = i32::from(*base.add(8).cast::<u8>());
+                                    match l48 {
+                                        0 => {
+                                            let l49 = *base.add(12).cast::<*mut u8>();
+                                            let l50 = *base.add(16).cast::<usize>();
+                                            _rt::cabi_dealloc(l49, l50, 1);
+                                        }
+                                        1 => {
+                                            let l51 = *base.add(12).cast::<*mut u8>();
+                                            let l52 = *base.add(16).cast::<usize>();
+                                            _rt::cabi_dealloc(l51, l52, 1);
+                                        }
+                                        _ => {
+                                            let l53 = *base.add(12).cast::<*mut u8>();
+                                            let l54 = *base.add(16).cast::<usize>();
+                                            _rt::cabi_dealloc(l53, l54, 1);
+                                        }
+                                    }
+                                }
+                                6 => {
+                                    let l55 = *base.add(4).cast::<*mut u8>();
+                                    let l56 = *base.add(8).cast::<usize>();
+                                    let base57 = l55;
+                                    let len57 = l56;
+                                    _rt::cabi_dealloc(base57, len57 * 16, 4);
+                                }
+                                _ => {
+                                    let l61 = *base.add(4).cast::<*mut u8>();
+                                    let l62 = *base.add(8).cast::<usize>();
+                                    let base63 = l61;
+                                    let len63 = l62;
+                                    for i in 0..len63 {
+                                        let base = base63.add(i * 16);
+                                        {
+                                            let l58 = *base.add(0).cast::<*mut u8>();
+                                            let l59 = *base.add(4).cast::<usize>();
+                                            let base60 = l58;
+                                            let len60 = l59;
+                                            _rt::cabi_dealloc(base60, len60 * 8, 4);
+                                        }
+                                    }
+                                    _rt::cabi_dealloc(base63, len63 * 16, 4);
+                                }
+                            }
+                        }
+                    }
+                    _rt::cabi_dealloc(base66, len66 * 40, 4);
+                }
+
+                pub trait Guest {
+                    fn hack_unused() -> NotedownRoot;
+                }
+                #[doc(hidden)]
+
+                macro_rules! __export_notedown_core_syntax_tree_0_1_0_cabi {
         ($ty:ident with_types_in $($path_to_types:tt)*) => (const _: () = {
 
           #[export_name = "notedown:core/syntax-tree@0.1.0#hack-unused"]
@@ -1170,196 +1449,196 @@ pub mod exports {
           }
         };);
       }
-        #[doc(hidden)]
-        pub(crate) use __export_notedown_core_syntax_tree_0_1_0_cabi;
+                #[doc(hidden)]
+                pub(crate) use __export_notedown_core_syntax_tree_0_1_0_cabi;
 
-        #[repr(align(4))]
-        struct _RetArea([::core::mem::MaybeUninit<u8>; 16]);
+                #[repr(align(4))]
+                struct _RetArea([::core::mem::MaybeUninit<u8>; 16]);
 
-        static mut _RET_AREA: _RetArea = _RetArea([::core::mem::MaybeUninit::uninit(); 16]);
-      }
+                static mut _RET_AREA: _RetArea = _RetArea([::core::mem::MaybeUninit::uninit(); 16]);
+            }
+        }
     }
-  }
 }
 mod _rt {
-  use core::{
-    fmt, marker,
-    sync::atomic::{AtomicU32, Ordering::Relaxed},
-  };
+    use core::{
+        fmt, marker,
+        sync::atomic::{AtomicU32, Ordering::Relaxed},
+    };
 
-  /// A type which represents a component model resource, either imported or
-  /// exported into this component.
-  ///
-  /// This is a low-level wrapper which handles the lifetime of the resource
-  /// (namely this has a destructor). The `T` provided defines the component
-  /// model intrinsics that this wrapper uses.
-  ///
-  /// One of the chief purposes of this type is to provide `Deref`
-  /// implementations to access the underlying data when it is owned.
-  ///
-  /// This type is primarily used in generated code for exported and imported
-  /// resources.
-  #[repr(transparent)]
-  pub struct Resource<T: WasmResource> {
-    // NB: This would ideally be `u32` but it is not. The fact that this has
-    // interior mutability is not exposed in the API of this type except for the
-    // `take_handle` method which is supposed to in theory be private.
-    //
-    // This represents, almost all the time, a valid handle value. When it's
-    // invalid it's stored as `u32::MAX`.
-    handle: AtomicU32,
-    _marker: marker::PhantomData<T>,
-  }
-
-  /// A trait which all wasm resources implement, namely providing the ability
-  /// to drop a resource.
-  ///
-  /// This generally is implemented by generated code, not user-facing code.
-  pub unsafe trait WasmResource {
-    /// Invokes the `[resource-drop]...` intrinsic.
-    unsafe fn drop(handle: u32);
-  }
-
-  impl<T: WasmResource> Resource<T> {
-    #[doc(hidden)]
-    pub unsafe fn from_handle(handle: u32) -> Self {
-      debug_assert!(handle != u32::MAX);
-      Self { handle: AtomicU32::new(handle), _marker: marker::PhantomData }
-    }
-
-    /// Takes ownership of the handle owned by `resource`.
+    /// A type which represents a component model resource, either imported or
+    /// exported into this component.
     ///
-    /// Note that this ideally would be `into_handle` taking `Resource<T>`
-    /// by ownership. The code generator does not enable that in all
-    /// situations, unfortunately, so this is provided instead.
+    /// This is a low-level wrapper which handles the lifetime of the resource
+    /// (namely this has a destructor). The `T` provided defines the component
+    /// model intrinsics that this wrapper uses.
     ///
-    /// Also note that `take_handle` is in theory only ever called on values
-    /// owned by a generated function. For example a generated function
-    /// might take `Resource<T>` as an argument but then call
-    /// `take_handle` on a reference to that argument. In that sense
-    /// the dynamic nature of `take_handle` should only be exposed
-    /// internally to generated code, not to user code.
-    #[doc(hidden)]
-    pub fn take_handle(resource: &Resource<T>) -> u32 {
-      resource.handle.swap(u32::MAX, Relaxed)
+    /// One of the chief purposes of this type is to provide `Deref`
+    /// implementations to access the underlying data when it is owned.
+    ///
+    /// This type is primarily used in generated code for exported and imported
+    /// resources.
+    #[repr(transparent)]
+    pub struct Resource<T: WasmResource> {
+        // NB: This would ideally be `u32` but it is not. The fact that this has
+        // interior mutability is not exposed in the API of this type except for the
+        // `take_handle` method which is supposed to in theory be private.
+        //
+        // This represents, almost all the time, a valid handle value. When it's
+        // invalid it's stored as `u32::MAX`.
+        handle: AtomicU32,
+        _marker: marker::PhantomData<T>,
     }
 
-    #[doc(hidden)]
-    pub fn handle(resource: &Resource<T>) -> u32 {
-      resource.handle.load(Relaxed)
+    /// A trait which all wasm resources implement, namely providing the ability
+    /// to drop a resource.
+    ///
+    /// This generally is implemented by generated code, not user-facing code.
+    pub unsafe trait WasmResource {
+        /// Invokes the `[resource-drop]...` intrinsic.
+        unsafe fn drop(handle: u32);
     }
-  }
 
-  impl<T: WasmResource> fmt::Debug for Resource<T> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-      f.debug_struct("Resource").field("handle", &self.handle).finish()
-    }
-  }
-
-  impl<T: WasmResource> Drop for Resource<T> {
-    fn drop(&mut self) {
-      unsafe {
-        match self.handle.load(Relaxed) {
-          // If this handle was "taken" then don't do anything in the
-          // destructor.
-          u32::MAX => {}
-
-          // ... but otherwise do actually destroy it with the imported
-          // component model intrinsic as defined through `T`.
-          other => T::drop(other),
+    impl<T: WasmResource> Resource<T> {
+        #[doc(hidden)]
+        pub unsafe fn from_handle(handle: u32) -> Self {
+            debug_assert!(handle != u32::MAX);
+            Self { handle: AtomicU32::new(handle), _marker: marker::PhantomData }
         }
-      }
+
+        /// Takes ownership of the handle owned by `resource`.
+        ///
+        /// Note that this ideally would be `into_handle` taking `Resource<T>`
+        /// by ownership. The code generator does not enable that in all
+        /// situations, unfortunately, so this is provided instead.
+        ///
+        /// Also note that `take_handle` is in theory only ever called on values
+        /// owned by a generated function. For example a generated function
+        /// might take `Resource<T>` as an argument but then call
+        /// `take_handle` on a reference to that argument. In that sense
+        /// the dynamic nature of `take_handle` should only be exposed
+        /// internally to generated code, not to user code.
+        #[doc(hidden)]
+        pub fn take_handle(resource: &Resource<T>) -> u32 {
+            resource.handle.swap(u32::MAX, Relaxed)
+        }
+
+        #[doc(hidden)]
+        pub fn handle(resource: &Resource<T>) -> u32 {
+            resource.handle.load(Relaxed)
+        }
     }
-  }
 
-  pub use alloc_crate::{boxed::Box, string::String, vec::Vec};
-
-  #[cfg(target_arch = "wasm32")]
-  pub fn run_ctors_once() {
-    wit_bindgen::rt::run_ctors_once();
-  }
-
-  pub fn as_i32<T: AsI32>(t: T) -> i32 {
-    t.as_i32()
-  }
-
-  pub trait AsI32 {
-    fn as_i32(self) -> i32;
-  }
-
-  impl<'a, T: Copy + AsI32> AsI32 for &'a T {
-    fn as_i32(self) -> i32 {
-      (*self).as_i32()
+    impl<T: WasmResource> fmt::Debug for Resource<T> {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            f.debug_struct("Resource").field("handle", &self.handle).finish()
+        }
     }
-  }
 
-  impl AsI32 for i32 {
-    #[inline]
-    fn as_i32(self) -> i32 {
-      self as i32
+    impl<T: WasmResource> Drop for Resource<T> {
+        fn drop(&mut self) {
+            unsafe {
+                match self.handle.load(Relaxed) {
+                    // If this handle was "taken" then don't do anything in the
+                    // destructor.
+                    u32::MAX => {}
+
+                    // ... but otherwise do actually destroy it with the imported
+                    // component model intrinsic as defined through `T`.
+                    other => T::drop(other),
+                }
+            }
+        }
     }
-  }
 
-  impl AsI32 for u32 {
-    #[inline]
-    fn as_i32(self) -> i32 {
-      self as i32
+    pub use alloc_crate::{boxed::Box, string::String, vec::Vec};
+
+    #[cfg(target_arch = "wasm32")]
+    pub fn run_ctors_once() {
+        wit_bindgen::rt::run_ctors_once();
     }
-  }
 
-  impl AsI32 for i16 {
-    #[inline]
-    fn as_i32(self) -> i32 {
-      self as i32
+    pub fn as_i32<T: AsI32>(t: T) -> i32 {
+        t.as_i32()
     }
-  }
 
-  impl AsI32 for u16 {
-    #[inline]
-    fn as_i32(self) -> i32 {
-      self as i32
+    pub trait AsI32 {
+        fn as_i32(self) -> i32;
     }
-  }
 
-  impl AsI32 for i8 {
-    #[inline]
-    fn as_i32(self) -> i32 {
-      self as i32
+    impl<'a, T: Copy + AsI32> AsI32 for &'a T {
+        fn as_i32(self) -> i32 {
+            (*self).as_i32()
+        }
     }
-  }
 
-  impl AsI32 for u8 {
-    #[inline]
-    fn as_i32(self) -> i32 {
-      self as i32
+    impl AsI32 for i32 {
+        #[inline]
+        fn as_i32(self) -> i32 {
+            self as i32
+        }
     }
-  }
 
-  impl AsI32 for char {
-    #[inline]
-    fn as_i32(self) -> i32 {
-      self as i32
+    impl AsI32 for u32 {
+        #[inline]
+        fn as_i32(self) -> i32 {
+            self as i32
+        }
     }
-  }
 
-  impl AsI32 for usize {
-    #[inline]
-    fn as_i32(self) -> i32 {
-      self as i32
+    impl AsI32 for i16 {
+        #[inline]
+        fn as_i32(self) -> i32 {
+            self as i32
+        }
     }
-  }
 
-  pub use alloc_crate::alloc;
-
-  pub unsafe fn cabi_dealloc(ptr: *mut u8, size: usize, align: usize) {
-    if size == 0 {
-      return;
+    impl AsI32 for u16 {
+        #[inline]
+        fn as_i32(self) -> i32 {
+            self as i32
+        }
     }
-    let layout = alloc::Layout::from_size_align_unchecked(size, align);
-    alloc::dealloc(ptr as *mut u8, layout);
-  }
 
-  extern crate alloc as alloc_crate;
+    impl AsI32 for i8 {
+        #[inline]
+        fn as_i32(self) -> i32 {
+            self as i32
+        }
+    }
+
+    impl AsI32 for u8 {
+        #[inline]
+        fn as_i32(self) -> i32 {
+            self as i32
+        }
+    }
+
+    impl AsI32 for char {
+        #[inline]
+        fn as_i32(self) -> i32 {
+            self as i32
+        }
+    }
+
+    impl AsI32 for usize {
+        #[inline]
+        fn as_i32(self) -> i32 {
+            self as i32
+        }
+    }
+
+    pub use alloc_crate::alloc;
+
+    pub unsafe fn cabi_dealloc(ptr: *mut u8, size: usize, align: usize) {
+        if size == 0 {
+            return;
+        }
+        let layout = alloc::Layout::from_size_align_unchecked(size, align);
+        alloc::dealloc(ptr as *mut u8, layout);
+    }
+
+    extern crate alloc as alloc_crate;
 }
 
 /// Generates `#[no_mangle]` functions to export the specified type as the
@@ -1394,37 +1673,43 @@ pub(crate) use __export_host_impl as export;
 #[cfg(target_arch = "wasm32")]
 #[link_section = "component-type:wit-bindgen:0.23.0:host:encoded world"]
 #[doc(hidden)]
-pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 1167] = *b"\
-\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\x94\x08\x01A\x02\x01\
+pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 1427] = *b"\
+\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\x98\x0a\x01A\x02\x01\
 A\x06\x01B\x05\x04\0\x03url\x03\x01\x01r\x02\x0bhead-offsety\x0btail-offsety\x04\
 \0\x0atext-range\x03\0\x01\x01m\x01\x07unknown\x04\0\x0enotedown-error\x03\0\x03\
 \x04\x01\x19notedown:core/types@0.1.0\x05\0\x02\x03\0\0\x0atext-range\x02\x03\0\0\
-\x03url\x01B,\x02\x03\x02\x01\x01\x04\0\x0atext-range\x03\0\0\x02\x03\x02\x01\x02\
-\x04\0\x03url\x03\0\x02\x01r\x02\x04texts\x05range\x01\x04\0\x0bnormal-text\x03\0\
-\x04\x01n\x04\x04bold\x06italic\x09underline\x0dstrikethrough\x04\0\x0astyle-typ\
-e\x03\0\x06\x01r\x02\x04type\x07\x05range\x01\x04\0\x0bstyled-text\x03\0\x08\x01\
-r\x02\x05linesy\x05range\x01\x04\0\x0fhorizontal-rule\x03\0\x0a\x01r\x02\x05line\
-sy\x05range\x01\x04\0\x0fbreakline-block\x03\0\x0c\x01r\x02\x05spaces\x05range\x01\
-\x04\0\x0cspace-inline\x03\0\x0e\x01r\x02\x08languages\x05range\x01\x04\0\x0ecod\
-e-highlight\x03\0\x10\x01q\x02\x05inine\0\0\x09highlight\x01\x11\0\x04\0\x0bcode\
--action\x03\0\x12\x01r\x03\x06action\x13\x05liness\x05range\x01\x04\0\x09code-sp\
-an\x03\0\x14\x01q\x02\x06inline\0\0\x05block\0\0\x04\0\x0cmath-display\x03\0\x16\
-\x01q\x03\x06mathml\x01s\0\x03tex\x01s\0\x09asciimath\x01s\0\x04\0\x0cmath-conte\
-nt\x03\0\x18\x01r\x03\x07display\x17\x07content\x19\x05range\x01\x04\0\x09math-s\
-pan\x03\0\x1a\x01q\x04\x04text\x01\x05\0\x05style\x01\x09\0\x04math\x01\x1b\0\x04\
-code\x01\x15\0\x04\0\x0eparagraph-item\x03\0\x1c\x01p\x1d\x01r\x02\x05terms\x1e\x05\
-range\x01\x04\0\x0fparagraph-block\x03\0\x1f\x01r\x03\x05levely\x05title\x20\x05\
-range\x01\x04\0\x0dheading-block\x03\0!\x01q\x06\x07heading\x01\"\0\x0fhorizonta\
-l-rule\x01\x0b\0\x09paragraph\x01\x20\0\x0bspace-break\x01\x0d\0\x0acode-block\x01\
-\x15\0\x0amath-block\x01\x1b\0\x04\0\x09root-item\x03\0#\x01p$\x01i\x03\x01k&\x01\
-r\x02\x06blocks%\x04path'\x04\0\x0dnotedown-root\x03\0(\x01@\0\0)\x04\0\x0bhack-\
-unused\x01*\x04\x01\x1fnotedown:core/syntax-tree@0.1.0\x05\x03\x04\x01\x18notedo\
-wn:core/host@0.1.0\x04\0\x0b\x0a\x01\0\x04host\x03\0\0\0G\x09producers\x01\x0cpr\
-ocessed-by\x02\x0dwit-component\x070.202.0\x10wit-bindgen-rust\x060.23.0";
+\x03url\x01B=\x02\x03\x02\x01\x01\x04\0\x0atext-range\x03\0\0\x02\x03\x02\x01\x02\
+\x04\0\x03url\x03\0\x02\x01r\x02\x05linesy\x05range\x01\x04\0\x0fhorizontal-rule\
+\x03\0\x04\x01r\x02\x05linesy\x05range\x01\x04\0\x0fbreakline-block\x03\0\x06\x01\
+r\x02\x05spaces\x05range\x01\x04\0\x0cspace-inline\x03\0\x08\x01r\x02\x08languag\
+es\x05range\x01\x04\0\x0ecode-highlight\x03\0\x0a\x01q\x02\x09anonymous\0\0\x09h\
+ighlight\x01\x0b\0\x04\0\x0bcode-action\x03\0\x0c\x01r\x03\x06action\x0d\x05line\
+ss\x05range\x01\x04\0\x10code-environment\x03\0\x0e\x01q\x02\x06inline\0\0\x05bl\
+ock\0\0\x04\0\x0cmath-display\x03\0\x10\x01q\x03\x06mathml\x01s\0\x03tex\x01s\0\x09\
+asciimath\x01s\0\x04\0\x0cmath-content\x03\0\x12\x01r\x03\x07display\x11\x07cont\
+ent\x13\x05range\x01\x04\0\x10math-environment\x03\0\x14\x01k\x7f\x01r\x03\x05le\
+vely\x07checked\x16\x05range\x01\x04\0\x09list-item\x03\0\x17\x01p\x18\x01r\x02\x05\
+items\x19\x05range\x01\x04\0\x10list-environment\x03\0\x1a\x01r\x01\x05range\x01\
+\x04\0\x0atable-cell\x03\0\x1c\x01p\x1d\x01r\x02\x05cells\x1e\x05range\x01\x04\0\
+\x09table-row\x03\0\x1f\x01p\x20\x01r\x02\x04rows!\x05range\x01\x04\0\x11table-e\
+nvironment\x03\0\"\x01r\x02\x04texts\x05range\x01\x04\0\x0bnormal-text\x03\0$\x01\
+n\x04\x04bold\x06italic\x09underline\x0dstrikethrough\x04\0\x0astyle-type\x03\0&\
+\x01r\x02\x04type'\x05range\x01\x04\0\x0bstyled-text\x03\0(\x01ks\x01r\x02\x03ur\
+l*\x05range\x01\x04\0\x0fimage-reference\x03\0+\x01q\x05\x04text\x01%\0\x05style\
+\x01)\0\x04math\x01\x15\0\x04code\x01\x0f\0\x05image\x01,\0\x04\0\x0eparagraph-i\
+tem\x03\0-\x01p.\x01r\x02\x05terms/\x05range\x01\x04\0\x0fparagraph-block\x03\00\
+\x01r\x03\x05levely\x05title1\x05range\x01\x04\0\x0dheading-block\x03\02\x01q\x08\
+\x07heading\x013\0\x0fhorizontal-rule\x01\x05\0\x09paragraph\x011\0\x0bspace-bre\
+ak\x01\x07\0\x04code\x01\x0f\0\x04math\x01\x15\0\x04list\x01\x1b\0\x05table\x01#\
+\0\x04\0\x09root-item\x03\04\x01p5\x01i\x03\x01k7\x01r\x02\x06blocks6\x04path8\x04\
+\0\x0dnotedown-root\x03\09\x01@\0\0:\x04\0\x0bhack-unused\x01;\x04\x01\x1fnotedo\
+wn:core/syntax-tree@0.1.0\x05\x03\x04\x01\x18notedown:core/host@0.1.0\x04\0\x0b\x0a\
+\x01\0\x04host\x03\0\0\0G\x09producers\x01\x0cprocessed-by\x02\x0dwit-component\x07\
+0.202.0\x10wit-bindgen-rust\x060.23.0";
 
 #[inline(never)]
 #[doc(hidden)]
 #[cfg(target_arch = "wasm32")]
 pub fn __link_custom_section_describing_imports() {
-  wit_bindgen::rt::maybe_link_cabi_realloc();
+    wit_bindgen::rt::maybe_link_cabi_realloc();
 }

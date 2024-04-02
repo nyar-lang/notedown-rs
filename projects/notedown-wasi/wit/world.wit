@@ -32,34 +32,12 @@ variant root-item {
     horizontal-rule(horizontal-rule),
     paragraph(paragraph-block),
     space-break(breakline-block),
-    code-block(code-span),
-    math-block(math-span),
+    code(code-environment),
+    math(math-environment),
+    %list(list-environment),
+    table(table-environment),
 }
-record paragraph-block {
-    terms: list<paragraph-item>,
-    range: text-range,
-}
-variant paragraph-item {
-    text(normal-text),
-    style(styled-text),
-    math(math-span),
-    code(code-span),
-}
-record normal-text {
-    text: string,
-    range: text-range,
-}
-record styled-text {
-    %type: style-type,
-    // items: list<paragraph-item>,
-    range: text-range,
-}
-flags style-type {
-    bold,
-    italic,
-    underline,
-    strikethrough,
-}
+
 // === title block === -----------------------------------------------------------------------------
 record heading-block {
     level: u32,
@@ -91,13 +69,14 @@ record space-inline {
 /// ```code(key: args)
 /// ```
 /// ````
-record code-span {
+record code-environment {
     action: code-action,
     lines: string,
     range: text-range,
 }
 variant code-action {
-    inine,
+    /// In-line anonymous highlighting
+    anonymous,
     highlight(code-highlight),
 }
 /// The math text written in the paragraph
@@ -119,7 +98,7 @@ record code-highlight {
 /// ```note
 /// The naunce of the universe is $6.022\times 10^{23}$
 /// ```
-record math-span {
+record math-environment {
     display: math-display,
     content: math-content,
     range: text-range,
@@ -136,11 +115,61 @@ variant math-content {
     asciimath(string),
 }
 // === line breaks === -----------------------------------------------------------------------------
-
-
-
-
-
+record list-environment {
+    items: list<list-item>,
+    range: text-range,
+}
+record list-item {
+    level: u32,
+    // content: list<paragraph-block>,
+    checked: option<bool>,
+    range: text-range,
+}
+// === line breaks === -----------------------------------------------------------------------------
+record table-environment {
+    rows: list<table-row>,
+    range: text-range,
+}
+record table-row {
+    cells: list<table-cell>,
+    range: text-range,
+}
+record table-cell {
+    // content: paragraph-block,
+    range: text-range,
+}
+// === paragraph environment === -----------------------------------------------------------------------------
+record paragraph-block {
+    terms: list<paragraph-item>,
+    range: text-range,
+}
+variant paragraph-item {
+    text(normal-text),
+    style(styled-text),
+    math(math-environment),
+    code(code-environment),
+    image(image-reference),
+}
+record normal-text {
+    text: string,
+    range: text-range,
+}
+record styled-text {
+    %type: style-type,
+    // items: list<paragraph-item>,
+    range: text-range,
+}
+flags style-type {
+    bold,
+    italic,
+    underline,
+    strikethrough,
+}
+/// \image(url, text)
+record image-reference {
+    url: option<string>,
+    range: text-range,
+}
 }
 
 interface visitor {
