@@ -28,6 +28,7 @@ record notedown-root {
     path: option<url>
 }
 variant root-item {
+    placeholder,
     heading(heading-block),
     horizontal-rule(horizontal-rule),
     paragraph(paragraph-block),
@@ -39,8 +40,9 @@ variant root-item {
 }
 
 // === title block === -----------------------------------------------------------------------------
+/// \title { text }
 record heading-block {
-    level: u32,
+    level: u8,
     title: paragraph-block,
     range: text-range,
 }
@@ -148,6 +150,7 @@ variant paragraph-item {
     style(styled-text),
     math(math-environment),
     code(code-environment),
+    link(link-reference),
     image(image-reference),
 }
 record normal-text {
@@ -165,9 +168,16 @@ flags style-type {
     underline,
     strikethrough,
 }
-/// \image(url, text)
+/// `\image(url, text)`
 record image-reference {
     url: option<string>,
+    alternative: string,
+    range: text-range,
+}
+/// `\link(url, text)`
+record link-reference {
+    url: option<string>,
+    title: string,
     range: text-range,
 }
 }

@@ -536,16 +536,35 @@ pub mod exports {
                     }
                 }
 
-                /// \image(url, text)
+                /// `\image(url, text)`
                 #[derive(Clone)]
                 pub struct ImageReference {
                     pub url: Option<_rt::String>,
+                    pub alternative: _rt::String,
                     pub range: TextRange,
                 }
 
                 impl ::core::fmt::Debug for ImageReference {
                     fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-                        f.debug_struct("ImageReference").field("url", &self.url).field("range", &self.range).finish()
+                        f.debug_struct("ImageReference")
+                            .field("url", &self.url)
+                            .field("alternative", &self.alternative)
+                            .field("range", &self.range)
+                            .finish()
+                    }
+                }
+
+                /// `\link(url, text)`
+                #[derive(Clone)]
+                pub struct LinkReference {
+                    pub url: Option<_rt::String>,
+                    pub title: _rt::String,
+                    pub range: TextRange,
+                }
+
+                impl ::core::fmt::Debug for LinkReference {
+                    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                        f.debug_struct("LinkReference").field("url", &self.url).field("title", &self.title).field("range", &self.range).finish()
                     }
                 }
 
@@ -555,6 +574,7 @@ pub mod exports {
                     Style(StyledText),
                     Math(MathEnvironment),
                     Code(CodeEnvironment),
+                    Link(LinkReference),
                     Image(ImageReference),
                 }
 
@@ -565,6 +585,7 @@ pub mod exports {
                             ParagraphItem::Style(e) => f.debug_tuple("ParagraphItem::Style").field(e).finish(),
                             ParagraphItem::Math(e) => f.debug_tuple("ParagraphItem::Math").field(e).finish(),
                             ParagraphItem::Code(e) => f.debug_tuple("ParagraphItem::Code").field(e).finish(),
+                            ParagraphItem::Link(e) => f.debug_tuple("ParagraphItem::Link").field(e).finish(),
                             ParagraphItem::Image(e) => f.debug_tuple("ParagraphItem::Image").field(e).finish(),
                         }
                     }
@@ -586,9 +607,10 @@ pub mod exports {
 
                 /// === title block ===
                 /// -----------------------------------------------------------------------------
+                /// \title { text }
                 #[derive(Clone)]
                 pub struct HeadingBlock {
-                    pub level: u32,
+                    pub level: u8,
                     pub title: ParagraphBlock,
                     pub range: TextRange,
                 }
@@ -649,41 +671,41 @@ pub mod exports {
                     let result0 = T::hack_unused();
                     let ptr1 = _RET_AREA.0.as_mut_ptr().cast::<u8>();
                     let NotedownRoot { blocks: blocks2, path: path2 } = result0;
-                    let vec77 = blocks2;
-                    let len77 = vec77.len();
-                    let layout77 = _rt::alloc::Layout::from_size_align_unchecked(vec77.len() * 40, 4);
-                    let result77 = if layout77.size() != 0 {
-                        let ptr = _rt::alloc::alloc(layout77).cast::<u8>();
+                    let vec87 = blocks2;
+                    let len87 = vec87.len();
+                    let layout87 = _rt::alloc::Layout::from_size_align_unchecked(vec87.len() * 40, 4);
+                    let result87 = if layout87.size() != 0 {
+                        let ptr = _rt::alloc::alloc(layout87).cast::<u8>();
                         if ptr.is_null() {
-                            _rt::alloc::handle_alloc_error(layout77);
+                            _rt::alloc::handle_alloc_error(layout87);
                         }
                         ptr
                     } else {
                         { ::core::ptr::null_mut() }
                     };
-                    for (i, e) in vec77.into_iter().enumerate() {
-                        let base = result77.add(i * 40);
+                    for (i, e) in vec87.into_iter().enumerate() {
+                        let base = result87.add(i * 40);
                         {
                             match e {
                                 RootItem::Heading(e) => {
                                     *base.add(0).cast::<u8>() = (0i32) as u8;
                                     let HeadingBlock { level: level3, title: title3, range: range3 } = e;
-                                    *base.add(4).cast::<i32>() = _rt::as_i32(level3);
+                                    *base.add(4).cast::<u8>() = (_rt::as_i32(level3)) as u8;
                                     let ParagraphBlock { terms: terms4, range: range4 } = title3;
-                                    let vec25 = terms4;
-                                    let len25 = vec25.len();
-                                    let layout25 = _rt::alloc::Layout::from_size_align_unchecked(vec25.len() * 40, 4);
-                                    let result25 = if layout25.size() != 0 {
-                                        let ptr = _rt::alloc::alloc(layout25).cast::<u8>();
+                                    let vec30 = terms4;
+                                    let len30 = vec30.len();
+                                    let layout30 = _rt::alloc::Layout::from_size_align_unchecked(vec30.len() * 40, 4);
+                                    let result30 = if layout30.size() != 0 {
+                                        let ptr = _rt::alloc::alloc(layout30).cast::<u8>();
                                         if ptr.is_null() {
-                                            _rt::alloc::handle_alloc_error(layout25);
+                                            _rt::alloc::handle_alloc_error(layout30);
                                         }
                                         ptr
                                     } else {
                                         { ::core::ptr::null_mut() }
                                     };
-                                    for (i, e) in vec25.into_iter().enumerate() {
-                                        let base = result25.add(i * 40);
+                                    for (i, e) in vec30.into_iter().enumerate() {
+                                        let base = result30.add(i * 40);
                                         {
                                             match e {
                                                 ParagraphItem::Text(e) => {
@@ -798,9 +820,9 @@ pub mod exports {
                                                     *base.add(32).cast::<i32>() = _rt::as_i32(head_offset21);
                                                     *base.add(36).cast::<i32>() = _rt::as_i32(tail_offset21);
                                                 }
-                                                ParagraphItem::Image(e) => {
+                                                ParagraphItem::Link(e) => {
                                                     *base.add(0).cast::<u8>() = (4i32) as u8;
-                                                    let ImageReference { url: url22, range: range22 } = e;
+                                                    let LinkReference { url: url22, title: title22, range: range22 } = e;
                                                     match url22 {
                                                         Some(e) => {
                                                             *base.add(4).cast::<u8>() = (1i32) as u8;
@@ -815,93 +837,129 @@ pub mod exports {
                                                             *base.add(4).cast::<u8>() = (0i32) as u8;
                                                         }
                                                     };
+                                                    let vec24 = (title22.into_bytes()).into_boxed_slice();
+                                                    let ptr24 = vec24.as_ptr().cast::<u8>();
+                                                    let len24 = vec24.len();
+                                                    ::core::mem::forget(vec24);
+                                                    *base.add(20).cast::<usize>() = len24;
+                                                    *base.add(16).cast::<*mut u8>() = ptr24.cast_mut();
                                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                                        head_offset: head_offset24,
-                                                        tail_offset: tail_offset24,
+                                                        head_offset: head_offset25,
+                                                        tail_offset: tail_offset25,
                                                     } = range22;
-                                                    *base.add(16).cast::<i32>() = _rt::as_i32(head_offset24);
-                                                    *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset24);
+                                                    *base.add(24).cast::<i32>() = _rt::as_i32(head_offset25);
+                                                    *base.add(28).cast::<i32>() = _rt::as_i32(tail_offset25);
+                                                }
+                                                ParagraphItem::Image(e) => {
+                                                    *base.add(0).cast::<u8>() = (5i32) as u8;
+                                                    let ImageReference { url: url26, alternative: alternative26, range: range26 } = e;
+                                                    match url26 {
+                                                        Some(e) => {
+                                                            *base.add(4).cast::<u8>() = (1i32) as u8;
+                                                            let vec27 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr27 = vec27.as_ptr().cast::<u8>();
+                                                            let len27 = vec27.len();
+                                                            ::core::mem::forget(vec27);
+                                                            *base.add(12).cast::<usize>() = len27;
+                                                            *base.add(8).cast::<*mut u8>() = ptr27.cast_mut();
+                                                        }
+                                                        None => {
+                                                            *base.add(4).cast::<u8>() = (0i32) as u8;
+                                                        }
+                                                    };
+                                                    let vec28 = (alternative26.into_bytes()).into_boxed_slice();
+                                                    let ptr28 = vec28.as_ptr().cast::<u8>();
+                                                    let len28 = vec28.len();
+                                                    ::core::mem::forget(vec28);
+                                                    *base.add(20).cast::<usize>() = len28;
+                                                    *base.add(16).cast::<*mut u8>() = ptr28.cast_mut();
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset29,
+                                                        tail_offset: tail_offset29,
+                                                    } = range26;
+                                                    *base.add(24).cast::<i32>() = _rt::as_i32(head_offset29);
+                                                    *base.add(28).cast::<i32>() = _rt::as_i32(tail_offset29);
                                                 }
                                             }
                                         }
                                     }
-                                    *base.add(12).cast::<usize>() = len25;
-                                    *base.add(8).cast::<*mut u8>() = result25;
+                                    *base.add(12).cast::<usize>() = len30;
+                                    *base.add(8).cast::<*mut u8>() = result30;
                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                        head_offset: head_offset26,
-                                        tail_offset: tail_offset26,
+                                        head_offset: head_offset31,
+                                        tail_offset: tail_offset31,
                                     } = range4;
-                                    *base.add(16).cast::<i32>() = _rt::as_i32(head_offset26);
-                                    *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset26);
+                                    *base.add(16).cast::<i32>() = _rt::as_i32(head_offset31);
+                                    *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset31);
                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                        head_offset: head_offset27,
-                                        tail_offset: tail_offset27,
+                                        head_offset: head_offset32,
+                                        tail_offset: tail_offset32,
                                     } = range3;
-                                    *base.add(24).cast::<i32>() = _rt::as_i32(head_offset27);
-                                    *base.add(28).cast::<i32>() = _rt::as_i32(tail_offset27);
+                                    *base.add(24).cast::<i32>() = _rt::as_i32(head_offset32);
+                                    *base.add(28).cast::<i32>() = _rt::as_i32(tail_offset32);
                                 }
                                 RootItem::HorizontalRule(e) => {
                                     *base.add(0).cast::<u8>() = (1i32) as u8;
-                                    let HorizontalRule { lines: lines28, range: range28 } = e;
-                                    *base.add(4).cast::<i32>() = _rt::as_i32(lines28);
+                                    let HorizontalRule { lines: lines33, range: range33 } = e;
+                                    *base.add(4).cast::<i32>() = _rt::as_i32(lines33);
                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                        head_offset: head_offset29,
-                                        tail_offset: tail_offset29,
-                                    } = range28;
-                                    *base.add(8).cast::<i32>() = _rt::as_i32(head_offset29);
-                                    *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset29);
+                                        head_offset: head_offset34,
+                                        tail_offset: tail_offset34,
+                                    } = range33;
+                                    *base.add(8).cast::<i32>() = _rt::as_i32(head_offset34);
+                                    *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset34);
                                 }
                                 RootItem::Paragraph(e) => {
                                     *base.add(0).cast::<u8>() = (2i32) as u8;
-                                    let ParagraphBlock { terms: terms30, range: range30 } = e;
-                                    let vec51 = terms30;
-                                    let len51 = vec51.len();
-                                    let layout51 = _rt::alloc::Layout::from_size_align_unchecked(vec51.len() * 40, 4);
-                                    let result51 = if layout51.size() != 0 {
-                                        let ptr = _rt::alloc::alloc(layout51).cast::<u8>();
+                                    let ParagraphBlock { terms: terms35, range: range35 } = e;
+                                    let vec61 = terms35;
+                                    let len61 = vec61.len();
+                                    let layout61 = _rt::alloc::Layout::from_size_align_unchecked(vec61.len() * 40, 4);
+                                    let result61 = if layout61.size() != 0 {
+                                        let ptr = _rt::alloc::alloc(layout61).cast::<u8>();
                                         if ptr.is_null() {
-                                            _rt::alloc::handle_alloc_error(layout51);
+                                            _rt::alloc::handle_alloc_error(layout61);
                                         }
                                         ptr
                                     } else {
                                         { ::core::ptr::null_mut() }
                                     };
-                                    for (i, e) in vec51.into_iter().enumerate() {
-                                        let base = result51.add(i * 40);
+                                    for (i, e) in vec61.into_iter().enumerate() {
+                                        let base = result61.add(i * 40);
                                         {
                                             match e {
                                                 ParagraphItem::Text(e) => {
                                                     *base.add(0).cast::<u8>() = (0i32) as u8;
-                                                    let NormalText { text: text31, range: range31 } = e;
-                                                    let vec32 = (text31.into_bytes()).into_boxed_slice();
-                                                    let ptr32 = vec32.as_ptr().cast::<u8>();
-                                                    let len32 = vec32.len();
-                                                    ::core::mem::forget(vec32);
-                                                    *base.add(8).cast::<usize>() = len32;
-                                                    *base.add(4).cast::<*mut u8>() = ptr32.cast_mut();
+                                                    let NormalText { text: text36, range: range36 } = e;
+                                                    let vec37 = (text36.into_bytes()).into_boxed_slice();
+                                                    let ptr37 = vec37.as_ptr().cast::<u8>();
+                                                    let len37 = vec37.len();
+                                                    ::core::mem::forget(vec37);
+                                                    *base.add(8).cast::<usize>() = len37;
+                                                    *base.add(4).cast::<*mut u8>() = ptr37.cast_mut();
                                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                                        head_offset: head_offset33,
-                                                        tail_offset: tail_offset33,
-                                                    } = range31;
-                                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset33);
-                                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset33);
+                                                        head_offset: head_offset38,
+                                                        tail_offset: tail_offset38,
+                                                    } = range36;
+                                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset38);
+                                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset38);
                                                 }
                                                 ParagraphItem::Style(e) => {
                                                     *base.add(0).cast::<u8>() = (1i32) as u8;
-                                                    let StyledText { type_: type_34, range: range34 } = e;
-                                                    let flags35 = type_34;
-                                                    *base.add(4).cast::<u8>() = ((flags35.bits() >> 0) as i32) as u8;
+                                                    let StyledText { type_: type_39, range: range39 } = e;
+                                                    let flags40 = type_39;
+                                                    *base.add(4).cast::<u8>() = ((flags40.bits() >> 0) as i32) as u8;
                                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                                        head_offset: head_offset36,
-                                                        tail_offset: tail_offset36,
-                                                    } = range34;
-                                                    *base.add(8).cast::<i32>() = _rt::as_i32(head_offset36);
-                                                    *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset36);
+                                                        head_offset: head_offset41,
+                                                        tail_offset: tail_offset41,
+                                                    } = range39;
+                                                    *base.add(8).cast::<i32>() = _rt::as_i32(head_offset41);
+                                                    *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset41);
                                                 }
                                                 ParagraphItem::Math(e) => {
                                                     *base.add(0).cast::<u8>() = (2i32) as u8;
-                                                    let MathEnvironment { display: display37, content: content37, range: range37 } = e;
-                                                    match display37 {
+                                                    let MathEnvironment { display: display42, content: content42, range: range42 } = e;
+                                                    match display42 {
                                                         MathDisplay::Inline => {
                                                             *base.add(4).cast::<u8>() = (0i32) as u8;
                                                         }
@@ -909,167 +967,203 @@ pub mod exports {
                                                             *base.add(4).cast::<u8>() = (1i32) as u8;
                                                         }
                                                     }
-                                                    match content37 {
+                                                    match content42 {
                                                         MathContent::Mathml(e) => {
                                                             *base.add(8).cast::<u8>() = (0i32) as u8;
-                                                            let vec38 = (e.into_bytes()).into_boxed_slice();
-                                                            let ptr38 = vec38.as_ptr().cast::<u8>();
-                                                            let len38 = vec38.len();
-                                                            ::core::mem::forget(vec38);
-                                                            *base.add(16).cast::<usize>() = len38;
-                                                            *base.add(12).cast::<*mut u8>() = ptr38.cast_mut();
+                                                            let vec43 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr43 = vec43.as_ptr().cast::<u8>();
+                                                            let len43 = vec43.len();
+                                                            ::core::mem::forget(vec43);
+                                                            *base.add(16).cast::<usize>() = len43;
+                                                            *base.add(12).cast::<*mut u8>() = ptr43.cast_mut();
                                                         }
                                                         MathContent::Tex(e) => {
                                                             *base.add(8).cast::<u8>() = (1i32) as u8;
-                                                            let vec39 = (e.into_bytes()).into_boxed_slice();
-                                                            let ptr39 = vec39.as_ptr().cast::<u8>();
-                                                            let len39 = vec39.len();
-                                                            ::core::mem::forget(vec39);
-                                                            *base.add(16).cast::<usize>() = len39;
-                                                            *base.add(12).cast::<*mut u8>() = ptr39.cast_mut();
+                                                            let vec44 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr44 = vec44.as_ptr().cast::<u8>();
+                                                            let len44 = vec44.len();
+                                                            ::core::mem::forget(vec44);
+                                                            *base.add(16).cast::<usize>() = len44;
+                                                            *base.add(12).cast::<*mut u8>() = ptr44.cast_mut();
                                                         }
                                                         MathContent::Asciimath(e) => {
                                                             *base.add(8).cast::<u8>() = (2i32) as u8;
-                                                            let vec40 = (e.into_bytes()).into_boxed_slice();
-                                                            let ptr40 = vec40.as_ptr().cast::<u8>();
-                                                            let len40 = vec40.len();
-                                                            ::core::mem::forget(vec40);
-                                                            *base.add(16).cast::<usize>() = len40;
-                                                            *base.add(12).cast::<*mut u8>() = ptr40.cast_mut();
+                                                            let vec45 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr45 = vec45.as_ptr().cast::<u8>();
+                                                            let len45 = vec45.len();
+                                                            ::core::mem::forget(vec45);
+                                                            *base.add(16).cast::<usize>() = len45;
+                                                            *base.add(12).cast::<*mut u8>() = ptr45.cast_mut();
                                                         }
                                                     }
                                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                                        head_offset: head_offset41,
-                                                        tail_offset: tail_offset41,
-                                                    } = range37;
-                                                    *base.add(20).cast::<i32>() = _rt::as_i32(head_offset41);
-                                                    *base.add(24).cast::<i32>() = _rt::as_i32(tail_offset41);
+                                                        head_offset: head_offset46,
+                                                        tail_offset: tail_offset46,
+                                                    } = range42;
+                                                    *base.add(20).cast::<i32>() = _rt::as_i32(head_offset46);
+                                                    *base.add(24).cast::<i32>() = _rt::as_i32(tail_offset46);
                                                 }
                                                 ParagraphItem::Code(e) => {
                                                     *base.add(0).cast::<u8>() = (3i32) as u8;
-                                                    let CodeEnvironment { action: action42, lines: lines42, range: range42 } = e;
-                                                    match action42 {
+                                                    let CodeEnvironment { action: action47, lines: lines47, range: range47 } = e;
+                                                    match action47 {
                                                         CodeAction::Anonymous => {
                                                             *base.add(4).cast::<u8>() = (0i32) as u8;
                                                         }
                                                         CodeAction::Highlight(e) => {
                                                             *base.add(4).cast::<u8>() = (1i32) as u8;
-                                                            let CodeHighlight { language: language43, range: range43 } = e;
-                                                            let vec44 = (language43.into_bytes()).into_boxed_slice();
-                                                            let ptr44 = vec44.as_ptr().cast::<u8>();
-                                                            let len44 = vec44.len();
-                                                            ::core::mem::forget(vec44);
-                                                            *base.add(12).cast::<usize>() = len44;
-                                                            *base.add(8).cast::<*mut u8>() = ptr44.cast_mut();
-                                                            let super::super::super::super::exports::notedown::core::types::TextRange {
-                                                                head_offset: head_offset45,
-                                                                tail_offset: tail_offset45,
-                                                            } = range43;
-                                                            *base.add(16).cast::<i32>() = _rt::as_i32(head_offset45);
-                                                            *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset45);
-                                                        }
-                                                    }
-                                                    let vec46 = (lines42.into_bytes()).into_boxed_slice();
-                                                    let ptr46 = vec46.as_ptr().cast::<u8>();
-                                                    let len46 = vec46.len();
-                                                    ::core::mem::forget(vec46);
-                                                    *base.add(28).cast::<usize>() = len46;
-                                                    *base.add(24).cast::<*mut u8>() = ptr46.cast_mut();
-                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
-                                                        head_offset: head_offset47,
-                                                        tail_offset: tail_offset47,
-                                                    } = range42;
-                                                    *base.add(32).cast::<i32>() = _rt::as_i32(head_offset47);
-                                                    *base.add(36).cast::<i32>() = _rt::as_i32(tail_offset47);
-                                                }
-                                                ParagraphItem::Image(e) => {
-                                                    *base.add(0).cast::<u8>() = (4i32) as u8;
-                                                    let ImageReference { url: url48, range: range48 } = e;
-                                                    match url48 {
-                                                        Some(e) => {
-                                                            *base.add(4).cast::<u8>() = (1i32) as u8;
-                                                            let vec49 = (e.into_bytes()).into_boxed_slice();
+                                                            let CodeHighlight { language: language48, range: range48 } = e;
+                                                            let vec49 = (language48.into_bytes()).into_boxed_slice();
                                                             let ptr49 = vec49.as_ptr().cast::<u8>();
                                                             let len49 = vec49.len();
                                                             ::core::mem::forget(vec49);
                                                             *base.add(12).cast::<usize>() = len49;
                                                             *base.add(8).cast::<*mut u8>() = ptr49.cast_mut();
+                                                            let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                                head_offset: head_offset50,
+                                                                tail_offset: tail_offset50,
+                                                            } = range48;
+                                                            *base.add(16).cast::<i32>() = _rt::as_i32(head_offset50);
+                                                            *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset50);
+                                                        }
+                                                    }
+                                                    let vec51 = (lines47.into_bytes()).into_boxed_slice();
+                                                    let ptr51 = vec51.as_ptr().cast::<u8>();
+                                                    let len51 = vec51.len();
+                                                    ::core::mem::forget(vec51);
+                                                    *base.add(28).cast::<usize>() = len51;
+                                                    *base.add(24).cast::<*mut u8>() = ptr51.cast_mut();
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset52,
+                                                        tail_offset: tail_offset52,
+                                                    } = range47;
+                                                    *base.add(32).cast::<i32>() = _rt::as_i32(head_offset52);
+                                                    *base.add(36).cast::<i32>() = _rt::as_i32(tail_offset52);
+                                                }
+                                                ParagraphItem::Link(e) => {
+                                                    *base.add(0).cast::<u8>() = (4i32) as u8;
+                                                    let LinkReference { url: url53, title: title53, range: range53 } = e;
+                                                    match url53 {
+                                                        Some(e) => {
+                                                            *base.add(4).cast::<u8>() = (1i32) as u8;
+                                                            let vec54 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr54 = vec54.as_ptr().cast::<u8>();
+                                                            let len54 = vec54.len();
+                                                            ::core::mem::forget(vec54);
+                                                            *base.add(12).cast::<usize>() = len54;
+                                                            *base.add(8).cast::<*mut u8>() = ptr54.cast_mut();
                                                         }
                                                         None => {
                                                             *base.add(4).cast::<u8>() = (0i32) as u8;
                                                         }
                                                     };
+                                                    let vec55 = (title53.into_bytes()).into_boxed_slice();
+                                                    let ptr55 = vec55.as_ptr().cast::<u8>();
+                                                    let len55 = vec55.len();
+                                                    ::core::mem::forget(vec55);
+                                                    *base.add(20).cast::<usize>() = len55;
+                                                    *base.add(16).cast::<*mut u8>() = ptr55.cast_mut();
                                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                                        head_offset: head_offset50,
-                                                        tail_offset: tail_offset50,
-                                                    } = range48;
-                                                    *base.add(16).cast::<i32>() = _rt::as_i32(head_offset50);
-                                                    *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset50);
+                                                        head_offset: head_offset56,
+                                                        tail_offset: tail_offset56,
+                                                    } = range53;
+                                                    *base.add(24).cast::<i32>() = _rt::as_i32(head_offset56);
+                                                    *base.add(28).cast::<i32>() = _rt::as_i32(tail_offset56);
+                                                }
+                                                ParagraphItem::Image(e) => {
+                                                    *base.add(0).cast::<u8>() = (5i32) as u8;
+                                                    let ImageReference { url: url57, alternative: alternative57, range: range57 } = e;
+                                                    match url57 {
+                                                        Some(e) => {
+                                                            *base.add(4).cast::<u8>() = (1i32) as u8;
+                                                            let vec58 = (e.into_bytes()).into_boxed_slice();
+                                                            let ptr58 = vec58.as_ptr().cast::<u8>();
+                                                            let len58 = vec58.len();
+                                                            ::core::mem::forget(vec58);
+                                                            *base.add(12).cast::<usize>() = len58;
+                                                            *base.add(8).cast::<*mut u8>() = ptr58.cast_mut();
+                                                        }
+                                                        None => {
+                                                            *base.add(4).cast::<u8>() = (0i32) as u8;
+                                                        }
+                                                    };
+                                                    let vec59 = (alternative57.into_bytes()).into_boxed_slice();
+                                                    let ptr59 = vec59.as_ptr().cast::<u8>();
+                                                    let len59 = vec59.len();
+                                                    ::core::mem::forget(vec59);
+                                                    *base.add(20).cast::<usize>() = len59;
+                                                    *base.add(16).cast::<*mut u8>() = ptr59.cast_mut();
+                                                    let super::super::super::super::exports::notedown::core::types::TextRange {
+                                                        head_offset: head_offset60,
+                                                        tail_offset: tail_offset60,
+                                                    } = range57;
+                                                    *base.add(24).cast::<i32>() = _rt::as_i32(head_offset60);
+                                                    *base.add(28).cast::<i32>() = _rt::as_i32(tail_offset60);
                                                 }
                                             }
                                         }
                                     }
-                                    *base.add(8).cast::<usize>() = len51;
-                                    *base.add(4).cast::<*mut u8>() = result51;
+                                    *base.add(8).cast::<usize>() = len61;
+                                    *base.add(4).cast::<*mut u8>() = result61;
                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                        head_offset: head_offset52,
-                                        tail_offset: tail_offset52,
-                                    } = range30;
-                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset52);
-                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset52);
+                                        head_offset: head_offset62,
+                                        tail_offset: tail_offset62,
+                                    } = range35;
+                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset62);
+                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset62);
                                 }
                                 RootItem::SpaceBreak(e) => {
                                     *base.add(0).cast::<u8>() = (3i32) as u8;
-                                    let BreaklineBlock { lines: lines53, range: range53 } = e;
-                                    *base.add(4).cast::<i32>() = _rt::as_i32(lines53);
+                                    let BreaklineBlock { lines: lines63, range: range63 } = e;
+                                    *base.add(4).cast::<i32>() = _rt::as_i32(lines63);
                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                        head_offset: head_offset54,
-                                        tail_offset: tail_offset54,
-                                    } = range53;
-                                    *base.add(8).cast::<i32>() = _rt::as_i32(head_offset54);
-                                    *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset54);
+                                        head_offset: head_offset64,
+                                        tail_offset: tail_offset64,
+                                    } = range63;
+                                    *base.add(8).cast::<i32>() = _rt::as_i32(head_offset64);
+                                    *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset64);
                                 }
                                 RootItem::Code(e) => {
                                     *base.add(0).cast::<u8>() = (4i32) as u8;
-                                    let CodeEnvironment { action: action55, lines: lines55, range: range55 } = e;
-                                    match action55 {
+                                    let CodeEnvironment { action: action65, lines: lines65, range: range65 } = e;
+                                    match action65 {
                                         CodeAction::Anonymous => {
                                             *base.add(4).cast::<u8>() = (0i32) as u8;
                                         }
                                         CodeAction::Highlight(e) => {
                                             *base.add(4).cast::<u8>() = (1i32) as u8;
-                                            let CodeHighlight { language: language56, range: range56 } = e;
-                                            let vec57 = (language56.into_bytes()).into_boxed_slice();
-                                            let ptr57 = vec57.as_ptr().cast::<u8>();
-                                            let len57 = vec57.len();
-                                            ::core::mem::forget(vec57);
-                                            *base.add(12).cast::<usize>() = len57;
-                                            *base.add(8).cast::<*mut u8>() = ptr57.cast_mut();
+                                            let CodeHighlight { language: language66, range: range66 } = e;
+                                            let vec67 = (language66.into_bytes()).into_boxed_slice();
+                                            let ptr67 = vec67.as_ptr().cast::<u8>();
+                                            let len67 = vec67.len();
+                                            ::core::mem::forget(vec67);
+                                            *base.add(12).cast::<usize>() = len67;
+                                            *base.add(8).cast::<*mut u8>() = ptr67.cast_mut();
                                             let super::super::super::super::exports::notedown::core::types::TextRange {
-                                                head_offset: head_offset58,
-                                                tail_offset: tail_offset58,
-                                            } = range56;
-                                            *base.add(16).cast::<i32>() = _rt::as_i32(head_offset58);
-                                            *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset58);
+                                                head_offset: head_offset68,
+                                                tail_offset: tail_offset68,
+                                            } = range66;
+                                            *base.add(16).cast::<i32>() = _rt::as_i32(head_offset68);
+                                            *base.add(20).cast::<i32>() = _rt::as_i32(tail_offset68);
                                         }
                                     }
-                                    let vec59 = (lines55.into_bytes()).into_boxed_slice();
-                                    let ptr59 = vec59.as_ptr().cast::<u8>();
-                                    let len59 = vec59.len();
-                                    ::core::mem::forget(vec59);
-                                    *base.add(28).cast::<usize>() = len59;
-                                    *base.add(24).cast::<*mut u8>() = ptr59.cast_mut();
+                                    let vec69 = (lines65.into_bytes()).into_boxed_slice();
+                                    let ptr69 = vec69.as_ptr().cast::<u8>();
+                                    let len69 = vec69.len();
+                                    ::core::mem::forget(vec69);
+                                    *base.add(28).cast::<usize>() = len69;
+                                    *base.add(24).cast::<*mut u8>() = ptr69.cast_mut();
                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                        head_offset: head_offset60,
-                                        tail_offset: tail_offset60,
-                                    } = range55;
-                                    *base.add(32).cast::<i32>() = _rt::as_i32(head_offset60);
-                                    *base.add(36).cast::<i32>() = _rt::as_i32(tail_offset60);
+                                        head_offset: head_offset70,
+                                        tail_offset: tail_offset70,
+                                    } = range65;
+                                    *base.add(32).cast::<i32>() = _rt::as_i32(head_offset70);
+                                    *base.add(36).cast::<i32>() = _rt::as_i32(tail_offset70);
                                 }
                                 RootItem::Math(e) => {
                                     *base.add(0).cast::<u8>() = (5i32) as u8;
-                                    let MathEnvironment { display: display61, content: content61, range: range61 } = e;
-                                    match display61 {
+                                    let MathEnvironment { display: display71, content: content71, range: range71 } = e;
+                                    match display71 {
                                         MathDisplay::Inline => {
                                             *base.add(4).cast::<u8>() = (0i32) as u8;
                                         }
@@ -1077,63 +1171,63 @@ pub mod exports {
                                             *base.add(4).cast::<u8>() = (1i32) as u8;
                                         }
                                     }
-                                    match content61 {
+                                    match content71 {
                                         MathContent::Mathml(e) => {
                                             *base.add(8).cast::<u8>() = (0i32) as u8;
-                                            let vec62 = (e.into_bytes()).into_boxed_slice();
-                                            let ptr62 = vec62.as_ptr().cast::<u8>();
-                                            let len62 = vec62.len();
-                                            ::core::mem::forget(vec62);
-                                            *base.add(16).cast::<usize>() = len62;
-                                            *base.add(12).cast::<*mut u8>() = ptr62.cast_mut();
+                                            let vec72 = (e.into_bytes()).into_boxed_slice();
+                                            let ptr72 = vec72.as_ptr().cast::<u8>();
+                                            let len72 = vec72.len();
+                                            ::core::mem::forget(vec72);
+                                            *base.add(16).cast::<usize>() = len72;
+                                            *base.add(12).cast::<*mut u8>() = ptr72.cast_mut();
                                         }
                                         MathContent::Tex(e) => {
                                             *base.add(8).cast::<u8>() = (1i32) as u8;
-                                            let vec63 = (e.into_bytes()).into_boxed_slice();
-                                            let ptr63 = vec63.as_ptr().cast::<u8>();
-                                            let len63 = vec63.len();
-                                            ::core::mem::forget(vec63);
-                                            *base.add(16).cast::<usize>() = len63;
-                                            *base.add(12).cast::<*mut u8>() = ptr63.cast_mut();
+                                            let vec73 = (e.into_bytes()).into_boxed_slice();
+                                            let ptr73 = vec73.as_ptr().cast::<u8>();
+                                            let len73 = vec73.len();
+                                            ::core::mem::forget(vec73);
+                                            *base.add(16).cast::<usize>() = len73;
+                                            *base.add(12).cast::<*mut u8>() = ptr73.cast_mut();
                                         }
                                         MathContent::Asciimath(e) => {
                                             *base.add(8).cast::<u8>() = (2i32) as u8;
-                                            let vec64 = (e.into_bytes()).into_boxed_slice();
-                                            let ptr64 = vec64.as_ptr().cast::<u8>();
-                                            let len64 = vec64.len();
-                                            ::core::mem::forget(vec64);
-                                            *base.add(16).cast::<usize>() = len64;
-                                            *base.add(12).cast::<*mut u8>() = ptr64.cast_mut();
+                                            let vec74 = (e.into_bytes()).into_boxed_slice();
+                                            let ptr74 = vec74.as_ptr().cast::<u8>();
+                                            let len74 = vec74.len();
+                                            ::core::mem::forget(vec74);
+                                            *base.add(16).cast::<usize>() = len74;
+                                            *base.add(12).cast::<*mut u8>() = ptr74.cast_mut();
                                         }
                                     }
                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                        head_offset: head_offset65,
-                                        tail_offset: tail_offset65,
-                                    } = range61;
-                                    *base.add(20).cast::<i32>() = _rt::as_i32(head_offset65);
-                                    *base.add(24).cast::<i32>() = _rt::as_i32(tail_offset65);
+                                        head_offset: head_offset75,
+                                        tail_offset: tail_offset75,
+                                    } = range71;
+                                    *base.add(20).cast::<i32>() = _rt::as_i32(head_offset75);
+                                    *base.add(24).cast::<i32>() = _rt::as_i32(tail_offset75);
                                 }
                                 RootItem::List(e) => {
                                     *base.add(0).cast::<u8>() = (6i32) as u8;
-                                    let ListEnvironment { items: items66, range: range66 } = e;
-                                    let vec69 = items66;
-                                    let len69 = vec69.len();
-                                    let layout69 = _rt::alloc::Layout::from_size_align_unchecked(vec69.len() * 16, 4);
-                                    let result69 = if layout69.size() != 0 {
-                                        let ptr = _rt::alloc::alloc(layout69).cast::<u8>();
+                                    let ListEnvironment { items: items76, range: range76 } = e;
+                                    let vec79 = items76;
+                                    let len79 = vec79.len();
+                                    let layout79 = _rt::alloc::Layout::from_size_align_unchecked(vec79.len() * 16, 4);
+                                    let result79 = if layout79.size() != 0 {
+                                        let ptr = _rt::alloc::alloc(layout79).cast::<u8>();
                                         if ptr.is_null() {
-                                            _rt::alloc::handle_alloc_error(layout69);
+                                            _rt::alloc::handle_alloc_error(layout79);
                                         }
                                         ptr
                                     } else {
                                         { ::core::ptr::null_mut() }
                                     };
-                                    for (i, e) in vec69.into_iter().enumerate() {
-                                        let base = result69.add(i * 16);
+                                    for (i, e) in vec79.into_iter().enumerate() {
+                                        let base = result79.add(i * 16);
                                         {
-                                            let ListItem { level: level67, checked: checked67, range: range67 } = e;
-                                            *base.add(0).cast::<i32>() = _rt::as_i32(level67);
-                                            match checked67 {
+                                            let ListItem { level: level77, checked: checked77, range: range77 } = e;
+                                            *base.add(0).cast::<i32>() = _rt::as_i32(level77);
+                                            match checked77 {
                                                 Some(e) => {
                                                     *base.add(4).cast::<u8>() = (1i32) as u8;
                                                     *base.add(5).cast::<u8>() = (match e {
@@ -1146,69 +1240,69 @@ pub mod exports {
                                                 }
                                             };
                                             let super::super::super::super::exports::notedown::core::types::TextRange {
-                                                head_offset: head_offset68,
-                                                tail_offset: tail_offset68,
-                                            } = range67;
-                                            *base.add(8).cast::<i32>() = _rt::as_i32(head_offset68);
-                                            *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset68);
+                                                head_offset: head_offset78,
+                                                tail_offset: tail_offset78,
+                                            } = range77;
+                                            *base.add(8).cast::<i32>() = _rt::as_i32(head_offset78);
+                                            *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset78);
                                         }
                                     }
-                                    *base.add(8).cast::<usize>() = len69;
-                                    *base.add(4).cast::<*mut u8>() = result69;
+                                    *base.add(8).cast::<usize>() = len79;
+                                    *base.add(4).cast::<*mut u8>() = result79;
                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                        head_offset: head_offset70,
-                                        tail_offset: tail_offset70,
-                                    } = range66;
-                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset70);
-                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset70);
+                                        head_offset: head_offset80,
+                                        tail_offset: tail_offset80,
+                                    } = range76;
+                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset80);
+                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset80);
                                 }
                                 RootItem::Table(e) => {
                                     *base.add(0).cast::<u8>() = (7i32) as u8;
-                                    let TableEnvironment { rows: rows71, range: range71 } = e;
-                                    let vec75 = rows71;
-                                    let len75 = vec75.len();
-                                    let layout75 = _rt::alloc::Layout::from_size_align_unchecked(vec75.len() * 16, 4);
-                                    let result75 = if layout75.size() != 0 {
-                                        let ptr = _rt::alloc::alloc(layout75).cast::<u8>();
+                                    let TableEnvironment { rows: rows81, range: range81 } = e;
+                                    let vec85 = rows81;
+                                    let len85 = vec85.len();
+                                    let layout85 = _rt::alloc::Layout::from_size_align_unchecked(vec85.len() * 16, 4);
+                                    let result85 = if layout85.size() != 0 {
+                                        let ptr = _rt::alloc::alloc(layout85).cast::<u8>();
                                         if ptr.is_null() {
-                                            _rt::alloc::handle_alloc_error(layout75);
+                                            _rt::alloc::handle_alloc_error(layout85);
                                         }
                                         ptr
                                     } else {
                                         { ::core::ptr::null_mut() }
                                     };
-                                    for (i, e) in vec75.into_iter().enumerate() {
-                                        let base = result75.add(i * 16);
+                                    for (i, e) in vec85.into_iter().enumerate() {
+                                        let base = result85.add(i * 16);
                                         {
-                                            let TableRow { cells: cells72, range: range72 } = e;
-                                            let vec73 = (cells72).into_boxed_slice();
-                                            let ptr73 = vec73.as_ptr().cast::<u8>();
-                                            let len73 = vec73.len();
-                                            ::core::mem::forget(vec73);
-                                            *base.add(4).cast::<usize>() = len73;
-                                            *base.add(0).cast::<*mut u8>() = ptr73.cast_mut();
+                                            let TableRow { cells: cells82, range: range82 } = e;
+                                            let vec83 = (cells82).into_boxed_slice();
+                                            let ptr83 = vec83.as_ptr().cast::<u8>();
+                                            let len83 = vec83.len();
+                                            ::core::mem::forget(vec83);
+                                            *base.add(4).cast::<usize>() = len83;
+                                            *base.add(0).cast::<*mut u8>() = ptr83.cast_mut();
                                             let super::super::super::super::exports::notedown::core::types::TextRange {
-                                                head_offset: head_offset74,
-                                                tail_offset: tail_offset74,
-                                            } = range72;
-                                            *base.add(8).cast::<i32>() = _rt::as_i32(head_offset74);
-                                            *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset74);
+                                                head_offset: head_offset84,
+                                                tail_offset: tail_offset84,
+                                            } = range82;
+                                            *base.add(8).cast::<i32>() = _rt::as_i32(head_offset84);
+                                            *base.add(12).cast::<i32>() = _rt::as_i32(tail_offset84);
                                         }
                                     }
-                                    *base.add(8).cast::<usize>() = len75;
-                                    *base.add(4).cast::<*mut u8>() = result75;
+                                    *base.add(8).cast::<usize>() = len85;
+                                    *base.add(4).cast::<*mut u8>() = result85;
                                     let super::super::super::super::exports::notedown::core::types::TextRange {
-                                        head_offset: head_offset76,
-                                        tail_offset: tail_offset76,
-                                    } = range71;
-                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset76);
-                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset76);
+                                        head_offset: head_offset86,
+                                        tail_offset: tail_offset86,
+                                    } = range81;
+                                    *base.add(12).cast::<i32>() = _rt::as_i32(head_offset86);
+                                    *base.add(16).cast::<i32>() = _rt::as_i32(tail_offset86);
                                 }
                             }
                         }
                     }
-                    *ptr1.add(4).cast::<usize>() = len77;
-                    *ptr1.add(0).cast::<*mut u8>() = result77;
+                    *ptr1.add(4).cast::<usize>() = len87;
+                    *ptr1.add(0).cast::<*mut u8>() = result87;
                     match path2 {
                         Some(e) => {
                             *ptr1.add(8).cast::<u8>() = (1i32) as u8;
@@ -1224,22 +1318,22 @@ pub mod exports {
                 #[doc(hidden)]
                 #[allow(non_snake_case)]
                 pub unsafe fn __post_return_hack_unused<T: Guest>(arg0: *mut u8) {
-                    let l64 = *arg0.add(0).cast::<*mut u8>();
-                    let l65 = *arg0.add(4).cast::<usize>();
-                    let base66 = l64;
-                    let len66 = l65;
-                    for i in 0..len66 {
-                        let base = base66.add(i * 40);
+                    let l78 = *arg0.add(0).cast::<*mut u8>();
+                    let l79 = *arg0.add(4).cast::<usize>();
+                    let base80 = l78;
+                    let len80 = l79;
+                    for i in 0..len80 {
+                        let base = base80.add(i * 40);
                         {
                             let l0 = i32::from(*base.add(0).cast::<u8>());
                             match l0 {
                                 0 => {
-                                    let l19 = *base.add(8).cast::<*mut u8>();
-                                    let l20 = *base.add(12).cast::<usize>();
-                                    let base21 = l19;
-                                    let len21 = l20;
-                                    for i in 0..len21 {
-                                        let base = base21.add(i * 40);
+                                    let l26 = *base.add(8).cast::<*mut u8>();
+                                    let l27 = *base.add(12).cast::<usize>();
+                                    let base28 = l26;
+                                    let len28 = l27;
+                                    for i in 0..len28 {
+                                        let base = base28.add(i * 40);
                                         {
                                             let l1 = i32::from(*base.add(0).cast::<u8>());
                                             match l1 {
@@ -1283,7 +1377,7 @@ pub mod exports {
                                                     let l15 = *base.add(28).cast::<usize>();
                                                     _rt::cabi_dealloc(l14, l15, 1);
                                                 }
-                                                _ => {
+                                                4 => {
                                                     let l16 = i32::from(*base.add(4).cast::<u8>());
                                                     match l16 {
                                                         0 => (),
@@ -1293,142 +1387,176 @@ pub mod exports {
                                                             _rt::cabi_dealloc(l17, l18, 1);
                                                         }
                                                     }
+                                                    let l19 = *base.add(16).cast::<*mut u8>();
+                                                    let l20 = *base.add(20).cast::<usize>();
+                                                    _rt::cabi_dealloc(l19, l20, 1);
+                                                }
+                                                _ => {
+                                                    let l21 = i32::from(*base.add(4).cast::<u8>());
+                                                    match l21 {
+                                                        0 => (),
+                                                        _ => {
+                                                            let l22 = *base.add(8).cast::<*mut u8>();
+                                                            let l23 = *base.add(12).cast::<usize>();
+                                                            _rt::cabi_dealloc(l22, l23, 1);
+                                                        }
+                                                    }
+                                                    let l24 = *base.add(16).cast::<*mut u8>();
+                                                    let l25 = *base.add(20).cast::<usize>();
+                                                    _rt::cabi_dealloc(l24, l25, 1);
                                                 }
                                             }
                                         }
                                     }
-                                    _rt::cabi_dealloc(base21, len21 * 40, 4);
+                                    _rt::cabi_dealloc(base28, len28 * 40, 4);
                                 }
                                 1 => (),
                                 2 => {
-                                    let l40 = *base.add(4).cast::<*mut u8>();
-                                    let l41 = *base.add(8).cast::<usize>();
-                                    let base42 = l40;
-                                    let len42 = l41;
-                                    for i in 0..len42 {
-                                        let base = base42.add(i * 40);
+                                    let l54 = *base.add(4).cast::<*mut u8>();
+                                    let l55 = *base.add(8).cast::<usize>();
+                                    let base56 = l54;
+                                    let len56 = l55;
+                                    for i in 0..len56 {
+                                        let base = base56.add(i * 40);
                                         {
-                                            let l22 = i32::from(*base.add(0).cast::<u8>());
-                                            match l22 {
+                                            let l29 = i32::from(*base.add(0).cast::<u8>());
+                                            match l29 {
                                                 0 => {
-                                                    let l23 = *base.add(4).cast::<*mut u8>();
-                                                    let l24 = *base.add(8).cast::<usize>();
-                                                    _rt::cabi_dealloc(l23, l24, 1);
+                                                    let l30 = *base.add(4).cast::<*mut u8>();
+                                                    let l31 = *base.add(8).cast::<usize>();
+                                                    _rt::cabi_dealloc(l30, l31, 1);
                                                 }
                                                 1 => (),
                                                 2 => {
-                                                    let l25 = i32::from(*base.add(8).cast::<u8>());
-                                                    match l25 {
+                                                    let l32 = i32::from(*base.add(8).cast::<u8>());
+                                                    match l32 {
                                                         0 => {
-                                                            let l26 = *base.add(12).cast::<*mut u8>();
-                                                            let l27 = *base.add(16).cast::<usize>();
-                                                            _rt::cabi_dealloc(l26, l27, 1);
+                                                            let l33 = *base.add(12).cast::<*mut u8>();
+                                                            let l34 = *base.add(16).cast::<usize>();
+                                                            _rt::cabi_dealloc(l33, l34, 1);
                                                         }
                                                         1 => {
-                                                            let l28 = *base.add(12).cast::<*mut u8>();
-                                                            let l29 = *base.add(16).cast::<usize>();
-                                                            _rt::cabi_dealloc(l28, l29, 1);
+                                                            let l35 = *base.add(12).cast::<*mut u8>();
+                                                            let l36 = *base.add(16).cast::<usize>();
+                                                            _rt::cabi_dealloc(l35, l36, 1);
                                                         }
                                                         _ => {
-                                                            let l30 = *base.add(12).cast::<*mut u8>();
-                                                            let l31 = *base.add(16).cast::<usize>();
-                                                            _rt::cabi_dealloc(l30, l31, 1);
+                                                            let l37 = *base.add(12).cast::<*mut u8>();
+                                                            let l38 = *base.add(16).cast::<usize>();
+                                                            _rt::cabi_dealloc(l37, l38, 1);
                                                         }
                                                     }
                                                 }
                                                 3 => {
-                                                    let l32 = i32::from(*base.add(4).cast::<u8>());
-                                                    match l32 {
+                                                    let l39 = i32::from(*base.add(4).cast::<u8>());
+                                                    match l39 {
                                                         0 => (),
                                                         _ => {
-                                                            let l33 = *base.add(8).cast::<*mut u8>();
-                                                            let l34 = *base.add(12).cast::<usize>();
-                                                            _rt::cabi_dealloc(l33, l34, 1);
+                                                            let l40 = *base.add(8).cast::<*mut u8>();
+                                                            let l41 = *base.add(12).cast::<usize>();
+                                                            _rt::cabi_dealloc(l40, l41, 1);
                                                         }
                                                     }
-                                                    let l35 = *base.add(24).cast::<*mut u8>();
-                                                    let l36 = *base.add(28).cast::<usize>();
-                                                    _rt::cabi_dealloc(l35, l36, 1);
+                                                    let l42 = *base.add(24).cast::<*mut u8>();
+                                                    let l43 = *base.add(28).cast::<usize>();
+                                                    _rt::cabi_dealloc(l42, l43, 1);
+                                                }
+                                                4 => {
+                                                    let l44 = i32::from(*base.add(4).cast::<u8>());
+                                                    match l44 {
+                                                        0 => (),
+                                                        _ => {
+                                                            let l45 = *base.add(8).cast::<*mut u8>();
+                                                            let l46 = *base.add(12).cast::<usize>();
+                                                            _rt::cabi_dealloc(l45, l46, 1);
+                                                        }
+                                                    }
+                                                    let l47 = *base.add(16).cast::<*mut u8>();
+                                                    let l48 = *base.add(20).cast::<usize>();
+                                                    _rt::cabi_dealloc(l47, l48, 1);
                                                 }
                                                 _ => {
-                                                    let l37 = i32::from(*base.add(4).cast::<u8>());
-                                                    match l37 {
+                                                    let l49 = i32::from(*base.add(4).cast::<u8>());
+                                                    match l49 {
                                                         0 => (),
                                                         _ => {
-                                                            let l38 = *base.add(8).cast::<*mut u8>();
-                                                            let l39 = *base.add(12).cast::<usize>();
-                                                            _rt::cabi_dealloc(l38, l39, 1);
+                                                            let l50 = *base.add(8).cast::<*mut u8>();
+                                                            let l51 = *base.add(12).cast::<usize>();
+                                                            _rt::cabi_dealloc(l50, l51, 1);
                                                         }
                                                     }
+                                                    let l52 = *base.add(16).cast::<*mut u8>();
+                                                    let l53 = *base.add(20).cast::<usize>();
+                                                    _rt::cabi_dealloc(l52, l53, 1);
                                                 }
                                             }
                                         }
                                     }
-                                    _rt::cabi_dealloc(base42, len42 * 40, 4);
+                                    _rt::cabi_dealloc(base56, len56 * 40, 4);
                                 }
                                 3 => (),
                                 4 => {
-                                    let l43 = i32::from(*base.add(4).cast::<u8>());
-                                    match l43 {
+                                    let l57 = i32::from(*base.add(4).cast::<u8>());
+                                    match l57 {
                                         0 => (),
                                         _ => {
-                                            let l44 = *base.add(8).cast::<*mut u8>();
-                                            let l45 = *base.add(12).cast::<usize>();
-                                            _rt::cabi_dealloc(l44, l45, 1);
+                                            let l58 = *base.add(8).cast::<*mut u8>();
+                                            let l59 = *base.add(12).cast::<usize>();
+                                            _rt::cabi_dealloc(l58, l59, 1);
                                         }
                                     }
-                                    let l46 = *base.add(24).cast::<*mut u8>();
-                                    let l47 = *base.add(28).cast::<usize>();
-                                    _rt::cabi_dealloc(l46, l47, 1);
+                                    let l60 = *base.add(24).cast::<*mut u8>();
+                                    let l61 = *base.add(28).cast::<usize>();
+                                    _rt::cabi_dealloc(l60, l61, 1);
                                 }
                                 5 => {
-                                    let l48 = i32::from(*base.add(8).cast::<u8>());
-                                    match l48 {
+                                    let l62 = i32::from(*base.add(8).cast::<u8>());
+                                    match l62 {
                                         0 => {
-                                            let l49 = *base.add(12).cast::<*mut u8>();
-                                            let l50 = *base.add(16).cast::<usize>();
-                                            _rt::cabi_dealloc(l49, l50, 1);
+                                            let l63 = *base.add(12).cast::<*mut u8>();
+                                            let l64 = *base.add(16).cast::<usize>();
+                                            _rt::cabi_dealloc(l63, l64, 1);
                                         }
                                         1 => {
-                                            let l51 = *base.add(12).cast::<*mut u8>();
-                                            let l52 = *base.add(16).cast::<usize>();
-                                            _rt::cabi_dealloc(l51, l52, 1);
+                                            let l65 = *base.add(12).cast::<*mut u8>();
+                                            let l66 = *base.add(16).cast::<usize>();
+                                            _rt::cabi_dealloc(l65, l66, 1);
                                         }
                                         _ => {
-                                            let l53 = *base.add(12).cast::<*mut u8>();
-                                            let l54 = *base.add(16).cast::<usize>();
-                                            _rt::cabi_dealloc(l53, l54, 1);
+                                            let l67 = *base.add(12).cast::<*mut u8>();
+                                            let l68 = *base.add(16).cast::<usize>();
+                                            _rt::cabi_dealloc(l67, l68, 1);
                                         }
                                     }
                                 }
                                 6 => {
-                                    let l55 = *base.add(4).cast::<*mut u8>();
-                                    let l56 = *base.add(8).cast::<usize>();
-                                    let base57 = l55;
-                                    let len57 = l56;
-                                    _rt::cabi_dealloc(base57, len57 * 16, 4);
+                                    let l69 = *base.add(4).cast::<*mut u8>();
+                                    let l70 = *base.add(8).cast::<usize>();
+                                    let base71 = l69;
+                                    let len71 = l70;
+                                    _rt::cabi_dealloc(base71, len71 * 16, 4);
                                 }
                                 _ => {
-                                    let l61 = *base.add(4).cast::<*mut u8>();
-                                    let l62 = *base.add(8).cast::<usize>();
-                                    let base63 = l61;
-                                    let len63 = l62;
-                                    for i in 0..len63 {
-                                        let base = base63.add(i * 16);
+                                    let l75 = *base.add(4).cast::<*mut u8>();
+                                    let l76 = *base.add(8).cast::<usize>();
+                                    let base77 = l75;
+                                    let len77 = l76;
+                                    for i in 0..len77 {
+                                        let base = base77.add(i * 16);
                                         {
-                                            let l58 = *base.add(0).cast::<*mut u8>();
-                                            let l59 = *base.add(4).cast::<usize>();
-                                            let base60 = l58;
-                                            let len60 = l59;
-                                            _rt::cabi_dealloc(base60, len60 * 8, 4);
+                                            let l72 = *base.add(0).cast::<*mut u8>();
+                                            let l73 = *base.add(4).cast::<usize>();
+                                            let base74 = l72;
+                                            let len74 = l73;
+                                            _rt::cabi_dealloc(base74, len74 * 8, 4);
                                         }
                                     }
-                                    _rt::cabi_dealloc(base63, len63 * 16, 4);
+                                    _rt::cabi_dealloc(base77, len77 * 16, 4);
                                 }
                             }
                         }
                     }
-                    _rt::cabi_dealloc(base66, len66 * 40, 4);
+                    _rt::cabi_dealloc(base80, len80 * 40, 4);
                 }
 
                 pub trait Guest {
@@ -1673,12 +1801,12 @@ pub(crate) use __export_host_impl as export;
 #[cfg(target_arch = "wasm32")]
 #[link_section = "component-type:wit-bindgen:0.23.0:host:encoded world"]
 #[doc(hidden)]
-pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 1427] = *b"\
-\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\x98\x0a\x01A\x02\x01\
+pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 1490] = *b"\
+\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\xd7\x0a\x01A\x02\x01\
 A\x06\x01B\x05\x04\0\x03url\x03\x01\x01r\x02\x0bhead-offsety\x0btail-offsety\x04\
 \0\x0atext-range\x03\0\x01\x01m\x01\x07unknown\x04\0\x0enotedown-error\x03\0\x03\
 \x04\x01\x19notedown:core/types@0.1.0\x05\0\x02\x03\0\0\x0atext-range\x02\x03\0\0\
-\x03url\x01B=\x02\x03\x02\x01\x01\x04\0\x0atext-range\x03\0\0\x02\x03\x02\x01\x02\
+\x03url\x01B?\x02\x03\x02\x01\x01\x04\0\x0atext-range\x03\0\0\x02\x03\x02\x01\x02\
 \x04\0\x03url\x03\0\x02\x01r\x02\x05linesy\x05range\x01\x04\0\x0fhorizontal-rule\
 \x03\0\x04\x01r\x02\x05linesy\x05range\x01\x04\0\x0fbreakline-block\x03\0\x06\x01\
 r\x02\x05spaces\x05range\x01\x04\0\x0cspace-inline\x03\0\x08\x01r\x02\x08languag\
@@ -1694,18 +1822,19 @@ items\x19\x05range\x01\x04\0\x10list-environment\x03\0\x1a\x01r\x01\x05range\x01
 \x09table-row\x03\0\x1f\x01p\x20\x01r\x02\x04rows!\x05range\x01\x04\0\x11table-e\
 nvironment\x03\0\"\x01r\x02\x04texts\x05range\x01\x04\0\x0bnormal-text\x03\0$\x01\
 n\x04\x04bold\x06italic\x09underline\x0dstrikethrough\x04\0\x0astyle-type\x03\0&\
-\x01r\x02\x04type'\x05range\x01\x04\0\x0bstyled-text\x03\0(\x01ks\x01r\x02\x03ur\
-l*\x05range\x01\x04\0\x0fimage-reference\x03\0+\x01q\x05\x04text\x01%\0\x05style\
-\x01)\0\x04math\x01\x15\0\x04code\x01\x0f\0\x05image\x01,\0\x04\0\x0eparagraph-i\
-tem\x03\0-\x01p.\x01r\x02\x05terms/\x05range\x01\x04\0\x0fparagraph-block\x03\00\
-\x01r\x03\x05levely\x05title1\x05range\x01\x04\0\x0dheading-block\x03\02\x01q\x08\
-\x07heading\x013\0\x0fhorizontal-rule\x01\x05\0\x09paragraph\x011\0\x0bspace-bre\
-ak\x01\x07\0\x04code\x01\x0f\0\x04math\x01\x15\0\x04list\x01\x1b\0\x05table\x01#\
-\0\x04\0\x09root-item\x03\04\x01p5\x01i\x03\x01k7\x01r\x02\x06blocks6\x04path8\x04\
-\0\x0dnotedown-root\x03\09\x01@\0\0:\x04\0\x0bhack-unused\x01;\x04\x01\x1fnotedo\
-wn:core/syntax-tree@0.1.0\x05\x03\x04\x01\x18notedown:core/host@0.1.0\x04\0\x0b\x0a\
-\x01\0\x04host\x03\0\0\0G\x09producers\x01\x0cprocessed-by\x02\x0dwit-component\x07\
-0.202.0\x10wit-bindgen-rust\x060.23.0";
+\x01r\x02\x04type'\x05range\x01\x04\0\x0bstyled-text\x03\0(\x01ks\x01r\x03\x03ur\
+l*\x0balternatives\x05range\x01\x04\0\x0fimage-reference\x03\0+\x01r\x03\x03url*\
+\x05titles\x05range\x01\x04\0\x0elink-reference\x03\0-\x01q\x06\x04text\x01%\0\x05\
+style\x01)\0\x04math\x01\x15\0\x04code\x01\x0f\0\x04link\x01.\0\x05image\x01,\0\x04\
+\0\x0eparagraph-item\x03\0/\x01p0\x01r\x02\x05terms1\x05range\x01\x04\0\x0fparag\
+raph-block\x03\02\x01r\x03\x05level}\x05title3\x05range\x01\x04\0\x0dheading-blo\
+ck\x03\04\x01q\x08\x07heading\x015\0\x0fhorizontal-rule\x01\x05\0\x09paragraph\x01\
+3\0\x0bspace-break\x01\x07\0\x04code\x01\x0f\0\x04math\x01\x15\0\x04list\x01\x1b\
+\0\x05table\x01#\0\x04\0\x09root-item\x03\06\x01p7\x01i\x03\x01k9\x01r\x02\x06bl\
+ocks8\x04path:\x04\0\x0dnotedown-root\x03\0;\x01@\0\0<\x04\0\x0bhack-unused\x01=\
+\x04\x01\x1fnotedown:core/syntax-tree@0.1.0\x05\x03\x04\x01\x18notedown:core/hos\
+t@0.1.0\x04\0\x0b\x0a\x01\0\x04host\x03\0\0\0G\x09producers\x01\x0cprocessed-by\x02\
+\x0dwit-component\x070.202.0\x10wit-bindgen-rust\x060.23.0";
 
 #[inline(never)]
 #[doc(hidden)]

@@ -1,6 +1,6 @@
 [package]
 name = "notedown-wasi"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Aster <192607617@qq.com>"]
 description = "Cross-language notedown sharing of intermediate representations"
 repository = "https://github.com/ygg-lang/yggdrasil-rs"
