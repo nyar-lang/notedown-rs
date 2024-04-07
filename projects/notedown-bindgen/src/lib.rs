@@ -5,7 +5,7 @@ use wit_bindgen_core::Files;
 use wit_parser::Resolve;
 
 fn generate_rust(rust_project: &Path) {
-    let config = wit_bindgen_rust::Opts { rustfmt: false, ..wit_bindgen_rust::Opts::default() };
+    let config = wit_bindgen_rust::Opts { rustfmt: false, generate_unused_types: true, ..wit_bindgen_rust::Opts::default() };
     let mut generator = config.build();
     let mut resolve = Resolve::default();
     let (pkg, _) = resolve.push_dir(&rust_project.join("wit")).unwrap();

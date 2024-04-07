@@ -1,7 +1,7 @@
 use crate::{
     exports::notedown::core::{
         syntax_tree::NotedownRoot,
-        types::{GuestUrl, NotedownError},
+        types::{GuestUrl, NotedownError, SyntaxError, TextRange},
     },
     NotedownHost,
 };
@@ -10,12 +10,6 @@ use url::ParseError;
 
 impl crate::exports::notedown::core::types::Guest for NotedownHost {
     type Url = UrlNative;
-}
-
-impl crate::exports::notedown::core::syntax_tree::Guest for NotedownHost {
-    fn hack_unused() -> NotedownRoot {
-        unreachable!()
-    }
 }
 
 pub struct UrlNative {
@@ -34,6 +28,6 @@ impl FromStr for UrlNative {
 
 impl From<ParseError> for NotedownError {
     fn from(value: ParseError) -> Self {
-        NotedownError::Unknown
+        NotedownError::Syntax(SyntaxError { reason: value.to_string(), file: None, range: TextRange { head_offset: 0, tail_offset: 0 } })
     }
 }

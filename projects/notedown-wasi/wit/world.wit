@@ -35,9 +35,7 @@ interface types {
 }
 
 interface syntax-tree {
-    use types.{text-range, url, object};
-
-    hack-unused: func() -> notedown-root;
+    use types.{text-range, url, object, notedown-error};
 
     record notedown-root {
         blocks: list<root-item>,
