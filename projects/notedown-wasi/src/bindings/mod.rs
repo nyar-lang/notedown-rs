@@ -1,7 +1,12 @@
 use crate::{
-    exports::notedown::core::{syntax_tree::NotedownRoot, types::GuestUrl},
+    exports::notedown::core::{
+        syntax_tree::NotedownRoot,
+        types::{GuestUrl, NotedownError},
+    },
     NotedownHost,
 };
+use std::str::FromStr;
+use url::ParseError;
 
 impl crate::exports::notedown::core::types::Guest for NotedownHost {
     type Url = UrlNative;
@@ -18,3 +23,17 @@ pub struct UrlNative {
 }
 
 impl GuestUrl for UrlNative {}
+
+impl FromStr for UrlNative {
+    type Err = NotedownError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(Self { repr: url::Url::from_str(s)? })
+    }
+}
+
+impl From<ParseError> for NotedownError {
+    fn from(value: ParseError) -> Self {
+        NotedownError::Unknown
+    }
+}

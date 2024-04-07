@@ -1,6 +1,6 @@
 [package]
 name = "notedown-wasi"
-version = "0.0.2"
+version = "0.0.4"
 authors = ["Aster <192607617@qq.com>"]
 description = "Cross-language notedown sharing of intermediate representations"
 repository = "https://github.com/ygg-lang/yggdrasil-rs"
@@ -19,6 +19,8 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 url = "2.5.0"
 wit-bindgen = "0.23.0"
+toml = { version = "0.8.12", optional = true }
+serde_json = { version = "1.0.115", optional = true }
 
 [features]
 default = []
