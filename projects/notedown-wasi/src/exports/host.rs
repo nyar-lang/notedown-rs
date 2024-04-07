@@ -231,8 +231,8 @@ pub mod exports {
                 pub trait GuestUrl: 'static {
                     #[doc(hidden)]
                     unsafe fn _resource_new(val: *mut u8) -> u32
-                        where
-                            Self: Sized,
+                    where
+                        Self: Sized,
                     {
                         #[cfg(not(target_arch = "wasm32"))]
                         {
@@ -253,8 +253,8 @@ pub mod exports {
 
                     #[doc(hidden)]
                     fn _resource_rep(handle: u32) -> *mut u8
-                        where
-                            Self: Sized,
+                    where
+                        Self: Sized,
                     {
                         #[cfg(not(target_arch = "wasm32"))]
                         {
