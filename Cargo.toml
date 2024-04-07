@@ -2,9 +2,9 @@
 resolver = "2"
 members = ["projects/*"]
 default-members = [
-    "projects/notedown-ast",
+    #    "projects/notedown-ast",
     "projects/notedown-wasi",
-    "projects/text-utils",
+    #    "projects/text-utils",
 ]
 exclude = [
 
