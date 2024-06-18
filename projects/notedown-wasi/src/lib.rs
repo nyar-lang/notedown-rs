@@ -4,7 +4,7 @@ pub struct NotedownHost {}
 
 pub use crate::bindings::UrlNative;
 
-include!("exports/host.rs");
+cargo_component_bindings::generate!("exports/host.rs");
 export!(NotedownHost);
 
 mod bindings;

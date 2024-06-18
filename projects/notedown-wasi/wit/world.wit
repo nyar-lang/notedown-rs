@@ -3,12 +3,11 @@ package notedown: core@0.1.0;
 world host {
     export types;
     export syntax-tree;
+    export math;
+    export code;
 }
 
 interface types {
-    resource url {
-
-    }
     record object {
         map: list<tuple<string, value>>,
     }
@@ -20,12 +19,17 @@ interface types {
         %string(string),
         %url(url),
     }
+    variant notedown-error {
+        syntax(syntax-error),
+    }
+
+
+    resource url {
+
+    }
     record text-range {
         head-offset: u32,
         tail-offset: u32,
-    }
-    variant notedown-error {
-        syntax(syntax-error),
     }
     record syntax-error {
         reason: string,
@@ -202,10 +206,14 @@ interface syntax-tree {
     }
 }
 
-interface visitor {
+interface math {
+    resource math-render {
 
+    }
 }
 
-interface listener {
+interface code {
+    resource code-render {
 
+    }
 }

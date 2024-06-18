@@ -1,8 +1,5 @@
 use crate::{
-    exports::notedown::core::{
-        syntax_tree::NotedownRoot,
-        types::{GuestUrl, NotedownError, SyntaxError, TextRange},
-    },
+    exports::notedown::core::types::{GuestUrl, NotedownError, SyntaxError, TextRange},
     NotedownHost,
 };
 use std::str::FromStr;

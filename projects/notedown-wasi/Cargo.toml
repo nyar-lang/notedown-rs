@@ -14,13 +14,19 @@ edition = "2021"
 
 [lib]
 name = "wasi_notedown"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 url = "2.5.0"
 wit-bindgen = "0.24.0"
 toml = { version = "0.8.12", optional = true }
 serde_json = { version = "1.0.115", optional = true }
+cargo-component-bindings = "0.6.0"
 
 [features]
 default = []
+
+[package.metadata.component]
+package = "notedown:core"
+
+[package.metadata.component.dependencies]

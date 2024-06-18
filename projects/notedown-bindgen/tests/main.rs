@@ -1,12 +1,18 @@
 #![allow(dead_code)]
 #![allow(non_camel_case_types)]
 
-use std::{fs::File, io::Write, path::Path};
-use wit_bindgen_core::Files;
-use wit_bindgen_rust::Opts;
-use wit_parser::Resolve;
+use bindgen::generate_rust;
+use std::path::Path;
 
 #[test]
 fn ready() {
     println!("it, works!")
+}
+
+#[test]
+fn export() {
+    let here = Path::new(env!("CARGO_MANIFEST_DIR"));
+    let _ = generate_rust(&here.join("..").join("notedown-wasi"));
+    let _ = generate_rust(Path::new(r#"C:\Users\Dell\CLionProjects\dejavu-engine\projects\dejavu-wasi"#));
+    let _ = generate_rust(Path::new(r#"C:\Users\Dell\CLionProjects\notedown-rs\projects\notedown-json"#));
 }
